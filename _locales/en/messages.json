@@ -1,0 +1,20 @@
+{
+  "extension_name": {
+    "message": "Yandex Search Unofficial Extension"
+  },
+  "extension_shortname": {
+    "message": "YaSearch"
+  },
+  "extension_description": {
+    "message": "This is an unofficial extension adding the Yandex search engine"
+  },
+  "search_url": {
+    "message": "https://yandex.com/search/?text={searchTerms}"
+  },
+  "search_favicon": {
+    "message": "https://yandex.com/favicon.ico"
+  },
+  "browser_action_title": {
+    "message": "Open Yandex Search website"
+  }
+}

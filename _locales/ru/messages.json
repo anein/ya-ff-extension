@@ -1,0 +1,20 @@
+{
+  "extension_name": {
+    "message": "Яндекс Поиск Неофициальное Дополнение"
+  },
+  "extension_shortname": {
+    "message": "YaSearch"
+  },
+  "extension_description": {
+    "message": "Неофициальное дополнение добавляет поиск Yandex в браузер"
+  },
+  "search_url": {
+    "message": "https://yandex.ru/search/?text={searchTerms}"
+  },
+  "search_favicon": {
+    "message": "https://yandex.ru/favicon.ico"
+  },
+  "browser_action_title": {
+    "message": "Open Yandex Search website"
+  }
+}
