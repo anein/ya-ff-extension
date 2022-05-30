@@ -16,5 +16,8 @@
   },
   "browser_action_title": {
     "message": "Open Yandex Search website"
+  },
+  "browser_action_url": {
+    "message": "https://yandex.com"
   }
 }
