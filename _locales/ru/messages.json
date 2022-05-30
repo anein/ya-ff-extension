@@ -16,5 +16,8 @@
   },
   "browser_action_title": {
     "message": "Открыть Яндекс Поиск"
+  },
+  "browser_action_url": {
+    "message": "https://ya.ru"
   }
 }
