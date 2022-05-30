@@ -11,6 +11,11 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
+  "background": {
+    "scripts": [
+      "background/background.js"
+    ]
+  },
   "chrome_settings_overrides": {
     "search_provider": {
       "name": "Yandex",
