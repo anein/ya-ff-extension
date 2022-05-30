@@ -6,7 +6,7 @@
     "message": "YaSearch"
   },
   "extension_description": {
-    "message": "This is an unofficial extension adding the Yandex search engine"
+    "message": "This is an unofficial extension adding the Yandex search provider"
   },
   "search_url": {
     "message": "https://yandex.com/search/?text={searchTerms}"
