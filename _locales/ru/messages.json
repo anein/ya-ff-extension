@@ -6,7 +6,7 @@
     "message": "YaSearch"
   },
   "extension_description": {
-    "message": "Добавляет поисковик Yandex в браузер. Является неофициальным дополнением."
+    "message": "Добавляет поиск Yandex в браузер. Является неофициальным дополнением."
   },
   "search_url": {
     "message": "https://yandex.ru/search/?text={searchTerms}"
