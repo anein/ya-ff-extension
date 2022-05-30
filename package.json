@@ -1,0 +1,24 @@
+{
+  "name": "YaSearch",
+  "author": {
+    "name": "Alexander Ein"
+  },
+  "description": "Yandex Search Unofficial Extension for Firefox ",
+  "keywords": [
+    "webextensions",
+    "webextensions-apis",
+    "mdn",
+    "firefox",
+    "mozilla",
+    "yandex"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint ./background/",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "husky": "^8.0.0"
+  }
+}

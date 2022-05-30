@@ -1,1 +1,6 @@
+# Compiled binary files
 build
+# Dependency directories
+node_modules/
+# Lock files
+*-lock.*
