@@ -9,6 +9,7 @@ jobs:
     name: "Release"
     runs-on: ubuntu-latest
     steps:
+    - run: ls -l
     - uses: trmcnvn/firefox-addon@v1
       with:
         # uuid is only necessary when updating an existing addon,
@@ -17,3 +18,4 @@ jobs:
         manifest: manifest.json
         api-key: ${{ secrets.FIREFOX_API_KEY }}
         api-secret: ${{ secrets.FIREFOX_API_SECRET }}
+    
