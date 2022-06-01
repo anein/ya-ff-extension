@@ -14,7 +14,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "lint": "eslint ./background/",
+    "lint": "eslint ./src/background/",
     "prepare": "husky install"
   },
   "devDependencies": {
