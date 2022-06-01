@@ -6,34 +6,13 @@ on:
 
 jobs:
   build:
-    name: "Build"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v1
-
-      - name: "web-ext build"
-        id: web-ext-build
-        uses: kewisch/action-web-ext@v1
-        with:
-          cmd: build
-          source: src
-          filename: "{name}-{version}.xpi"
-
-      - name: "Upload Artifact"
-        uses: actions/upload-artifact@master
-        with:
-          name: target.xpi
-          path: ${{ steps.web-ext-build.outputs.target }}
-          
-#   sign:
-#     name: "Release"
-#     runs-on: ubuntu-latest
-#     steps:
-#     - uses: trmcnvn/firefox-addon@v1
-#       with:
-#         xpi: build/my-addon.xpi
-#         manifest: manifest.json
-#         api-key: ${{ secrets.FIREFOX_API_KEY }}
-#         api-secret: ${{ secrets.FIREFOX_API_SECRET }}
-    
+   runs-on: ubuntu-latest
+   steps:
+   
+    - name: "Publish Firefox"
+      uses: trmcnvn/firefox-addon@v1
+      with:
+        xpi: build/my-addon.xpi
+        manifest: src/manifest.json
+        api-key: ${{ secrets.FIREFOX_API_KEY }}
+        api-secret: ${{ secrets.FIREFOX_API_SECRET }}
