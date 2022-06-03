@@ -9,16 +9,16 @@ jobs:
    steps:
     - name: "Checkout"
       uses: actions/checkout@v1
-    
+
    # Get Extension version
     - name: "Get Extension Version"
       id: get_version
       run: echo "::set-output name=EXTENSION_VERSION::v$(cat src/manifest.json | sed -nr 's/(\"version\":).*\"([0-9]+(\.[0-9]+)*)\".$/\2/p' | tr -d '[:space:]')"
-      
+
    # Show extension version
     - name: Show extension version
       run: echo "Extension version is ${{steps.get_version.outputs.EXTENSION_VERSION}}"
-      
+
    #Build extention
     - name: "web-ext build"
       id: web-ext-build
@@ -27,12 +27,12 @@ jobs:
         cmd: build
         source: src
         filename: "{name}-{version}.xpi"
-    
+
     # Check building
     - name: Check building
       run: |
         ls -la web-ext-artifacts
-        
+
     # Sign extension
     - name: "web-ext sign"
       id: web-ext-sign
@@ -40,11 +40,11 @@ jobs:
       with:
           cmd: sign
           source: ${{ steps.web-ext-build.outputs.target }}
-          channel: unlisted
+          channel: listed
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
           timeout: 12000
-          
+
     # Create  Release
     - name: "Create Release"
       uses: softprops/action-gh-release@v1
