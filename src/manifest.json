@@ -33,8 +33,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "yandex-search-unofficial-extension@anein",
-      "strict_min_version": "48.0"
+      "id": "yandex-search-unofficial-extension@anein"
     }
   }
 }
