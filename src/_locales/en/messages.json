@@ -9,7 +9,7 @@
     "message": "This is an unofficial extension adding the Yandex search provider"
   },
   "search_url": {
-    "message": "https://yandex.com/search/?text={searchTerms}"
+    "message": "yandex.com"
   },
   "search_favicon": {
     "message": "https://yandex.com/favicon.ico"

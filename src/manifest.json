@@ -19,11 +19,11 @@
   "chrome_settings_overrides": {
     "search_provider": {
       "name": "Yandex",
-      "keyword": "@ya",
+      "keyword": "@yandex",
       "is_default": true,
       "encoding": "UTF-8",
       "favicon_url": "__MSG_search_favicon__",
-      "search_url": "__MSG_search_url__"
+      "search_url": "https://__MSG_search_url__/search/?text={searchTerms}"
     }
   },
   "browser_action": {
@@ -33,8 +33,8 @@
   },
   "browser_specific_settings": {
     "gecko": {
-    "id": null,
-    "strict_min_version": "48.0"
-  }
+      "id": "",
+      "strict_min_version": "48.0"
+    }
   }
 }

@@ -9,7 +9,7 @@
     "message": "Добавляет поиск Yandex в браузер. Является неофициальным дополнением."
   },
   "search_url": {
-    "message": "https://yandex.ru/search/?text={searchTerms}"
+    "message": "yandex.ru"
   },
   "search_favicon": {
     "message": "https://yandex.ru/favicon.ico"
