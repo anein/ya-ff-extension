@@ -42,7 +42,7 @@ jobs:
           channel: unlisted
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
-          timeout: 120000
+          timeout: 100000
           
      # Check building
     - name: Check building
