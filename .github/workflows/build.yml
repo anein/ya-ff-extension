@@ -42,25 +42,17 @@ jobs:
           channel: unlisted
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
-          timeout: 900000
+          timeout: 120000
           
      # Check building
     - name: Check building
       run: |
         ls -la web-ext-artifacts
         
-#     - name: "Create Release"
-#       uses: softprops/action-gh-release@v1
-#       env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       with:
-#           tag_name: ${{ steps.get_version.outputs.EXTENSION_VERSION }}
-#           files: ${{ steps.web-ext-sign.outputs.target }}
-    
-#     - name: "Publish to Firefox Market"
-#       uses: trmcnvn/firefox-addon@v1
-#       with:
-#         xpi: ${{ steps.web-ext-sign.outputs.target }}
-#         manifest: src/manifest.json
-#         api-key: ${{ secrets.FIREFOX_API_KEY }}
-#         api-secret: ${{ secrets.FIREFOX_API_SECRET }}
+    - name: "Create Release"
+      uses: softprops/action-gh-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          tag_name: ${{ steps.get_version.outputs.EXTENSION_VERSION }}
+          files: ${{ steps.web-ext-sign.outputs.target }}
