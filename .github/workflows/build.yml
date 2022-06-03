@@ -30,7 +30,9 @@ jobs:
     
     # Check building
     - name: Check building
-      run: ls -la
+      run: |
+        ls -la
+        ls -la web-ext-artifacts
     
 #     - name: "Publish to Firefox Market"
 #       uses: trmcnvn/firefox-addon@v1
