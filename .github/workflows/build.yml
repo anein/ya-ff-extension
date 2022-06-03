@@ -33,6 +33,7 @@ jobs:
       run: |
         ls -la web-ext-artifacts
         
+    # Sign extension
     - name: "web-ext sign"
       id: web-ext-sign
       uses: kewisch/action-web-ext@v1
@@ -42,17 +43,13 @@ jobs:
           channel: unlisted
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
-          timeout: 100000
+          timeout: 12000
           
-#      # Check building
-#     - name: Check building
-#       run: |
-#         ls -la web-ext-artifacts
-        
-#     - name: "Create Release"
-#       uses: softprops/action-gh-release@v1
-#       env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       with:
-#           tag_name: ${{ steps.get_version.outputs.EXTENSION_VERSION }}
-#           files: ${{ steps.web-ext-sign.outputs.target }}
+    # Create  Release
+    - name: "Create Release"
+      uses: softprops/action-gh-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          tag_name: ${{ steps.get_version.outputs.EXTENSION_VERSION }}
+          files: ${{ steps.web-ext-sign.outputs.target }}
