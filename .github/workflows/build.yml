@@ -44,15 +44,15 @@ jobs:
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
           timeout: 100000
           
-     # Check building
-    - name: Check building
-      run: |
-        ls -la web-ext-artifacts
+#      # Check building
+#     - name: Check building
+#       run: |
+#         ls -la web-ext-artifacts
         
-    - name: "Create Release"
-      uses: softprops/action-gh-release@v1
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-          tag_name: ${{ steps.get_version.outputs.EXTENSION_VERSION }}
-          files: ${{ steps.web-ext-sign.outputs.target }}
+#     - name: "Create Release"
+#       uses: softprops/action-gh-release@v1
+#       env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       with:
+#           tag_name: ${{ steps.get_version.outputs.EXTENSION_VERSION }}
+#           files: ${{ steps.web-ext-sign.outputs.target }}
