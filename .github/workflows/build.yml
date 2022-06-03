@@ -30,7 +30,7 @@ jobs:
     
     # Check building
     - name: Check building
-      run: ls -la build
+      run: ls -la
     
 #     - name: "Publish to Firefox Market"
 #       uses: trmcnvn/firefox-addon@v1
