@@ -44,7 +44,10 @@ jobs:
 #           apiKey: ${{ secrets.AMO_SIGN_KEY }}
 #           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
 #           timeout: 900000
-
+    
+    - name: Generate Changelog
+      run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
+        
     - name: "Create Release"
       uses: softprops/action-gh-release@v1
       env:
