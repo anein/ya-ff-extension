@@ -7,21 +7,35 @@ jobs:
   build:
    runs-on: ubuntu-latest
    steps:
-   # Set working directory
-    - uses: actions/checkout@v2
+    - name: "Checkout"
+      uses: actions/checkout@v1
     
    # Get Extension version
     - name: "Get Extension Version"
       id: get_version
       run: echo "::set-output name=EXTENSION_VERSION::v$(cat src/manifest.json | sed -nr 's/(\"version\":).*\"([0-9]+(\.[0-9]+)*)\".$/\2/p' | tr -d '[:space:]')"
       
+   # Show extension version
     - name: Show extension version
       run: echo "Extension version is ${{steps.get_version.outputs.EXTENSION_VERSION}}"
       
-    - name: "Publish to Firefox Market"
-      uses: trmcnvn/firefox-addon@v1
+   #Build extention
+    - name: "web-ext build"
+      id: web-ext-build
+      uses: kewisch/action-web-ext@v1
       with:
-        xpi: build/my-addon.xpi
-        manifest: src/manifest.json
-        api-key: ${{ secrets.FIREFOX_API_KEY }}
-        api-secret: ${{ secrets.FIREFOX_API_SECRET }}
+        cmd: build
+        source: src
+        filename: "{name}-{version}.xpi"
+    
+    # Check building
+    - name: Check building
+      run: ls -la build
+    
+#     - name: "Publish to Firefox Market"
+#       uses: trmcnvn/firefox-addon@v1
+#       with:
+#         xpi: build/my-addon.xpi
+#         manifest: src/manifest.json
+#         api-key: ${{ secrets.FIREFOX_API_KEY }}
+#         api-secret: ${{ secrets.FIREFOX_API_SECRET }}
