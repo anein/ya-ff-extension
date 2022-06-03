@@ -30,5 +30,11 @@
     "browser_style": true,
     "default_title": "__MSG_browser_action_title__",
     "default_icon": "icons/icon-48.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+    "id": null,
+    "strict_min_version": "42.0"
+  }
   }
 }
