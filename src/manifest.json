@@ -19,10 +19,10 @@
   "chrome_settings_overrides": {
     "search_provider": {
       "name": "Yandex",
-      "keyword": "@yandex",
+      "keyword": "@ya",
       "is_default": true,
       "encoding": "UTF-8",
-      "favicon_url": "__MSG_search_favicon__",
+      "favicon_url": "icons/favicon.ico",
       "search_url": "https://__MSG_search_url__/search/?text={searchTerms}"
     }
   },
