@@ -1,8 +1,8 @@
 name: "Build"
 on:
   push:
-    branches:
-      - main
+    tags:
+      - v*
 jobs:
   build:
    runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
           channel: listed
           apiKey: ${{ secrets.AMO_SIGN_KEY }}
           apiSecret: ${{ secrets.AMO_SIGN_SECRET }}
-          timeout: 12000
+          timeout: 18000
 
     # Create  Release
     - name: "Create Release"
