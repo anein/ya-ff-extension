@@ -1,0 +1,20 @@
+name: "Release"
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  extract_version:
+    - uses: .github/workflows/version.yml@1
+
+  build:
+    runs-on: ubuntu-latest
+    needs: extract_version
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3
+
+      - name: Show release version
+        run: echo $({ needs.extract_version.outputs.version  })
