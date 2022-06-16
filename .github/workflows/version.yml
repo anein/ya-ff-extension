@@ -5,7 +5,7 @@ on:
     outputs:
       version:
         description: "The extracted version"
-        value: $({ jobs.get_version.outputs.version })
+        value: ${{ jobs.get_version.outputs.version }}
 
 jobs:
   get_version:
