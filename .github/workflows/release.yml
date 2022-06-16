@@ -7,7 +7,7 @@ on:
 
 jobs:
   extract_version:
-    uses: .github/workflows/version.yml@1
+    uses: ./.github/workflows/version.yml
 
   build:
     runs-on: ubuntu-latest
