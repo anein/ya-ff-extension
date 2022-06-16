@@ -8,7 +8,7 @@ on:
 jobs:
   extract_version:
     uses: ./.github/workflows/version.yml
-
+    
   build:
     runs-on: ubuntu-latest
     needs: extract_version
