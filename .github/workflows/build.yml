@@ -29,6 +29,7 @@ jobs:
    # Build extention
     - name: "web-ext build"
       id: web_ext_build
+      if: ${{ inputs.version }}
       uses: kewisch/action-web-ext@v1
       with:
         cmd: build
