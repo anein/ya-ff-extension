@@ -11,6 +11,7 @@ jobs:
   
   ext_build:
     needs: extract_version
+    if: ${{ needs.extract_version.outputs.version }}
     uses: ./.github/workflows/build.yml
     with:
       version: ${{ needs.extract_version.outputs.version }}
