@@ -28,14 +28,17 @@ jobs:
 
       - name: Show release version
         run: echo "Extension version is ${{ needs.extract_version.outputs.version }}"
-      - name: Show file
-        run: echo ${{ needs.ext_build.outputs.target }}
-        
+     
+      - name: Download Artifact
+        id: download_artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: "${{ needs.extract_version.outputs.version }}.xpi"
+     
       - name: Create Release
         uses: softprops/action-gh-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ needs.extract_version.outputs.version }}
-            files: ${{ needs.ext_build.outputs.target }}
-
+            files: ${{ steps.download_artifact.outputs.download-path }}
