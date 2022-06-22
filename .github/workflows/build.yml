@@ -3,7 +3,7 @@ name: "Build Extension"
 on:
   workflow_call:
     inputs:
-      ext_version:
+      version:
         required: true
         type: string
         
@@ -21,7 +21,7 @@ jobs:
    
    steps:
     - name: "Checkout"
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
       
    # Build extention
     - name: "web-ext build"
@@ -30,4 +30,4 @@ jobs:
       with:
         cmd: build
         source: src
-        filename: "{name}-{inputs.ext_version}.xpi"
+        filename: "{name}-{inputs.version}.xpi"
