@@ -36,11 +36,13 @@ jobs:
           name: "${{ needs.extract_version.outputs.version }}.xpi"
           path: "./${{ needs.extract_version.outputs.version }}.xpi"
           
-    
+      - run: ls .
+        
       - name: Create Release
         uses: softprops/action-gh-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ needs.extract_version.outputs.version }}
-            files:  "./${{ needs.extract_version.outputs.version }}.xpi"
+            files: |
+                "./${{ needs.extract_version.outputs.version }}.xpi"
