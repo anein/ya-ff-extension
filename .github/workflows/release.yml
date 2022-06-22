@@ -30,12 +30,12 @@ jobs:
         run: echo "Extension version is ${{ needs.extract_version.outputs.version }}"
       - run: ls .
       
-#       - name: Download Artifact
-#         id: download_artifact
-#         uses: actions/download-artifact@v3
-#         with:
-#           name: "${{ needs.extract_version.outputs.version }}.xpi"
-#           path: "${{ github.workspace }}/build/${{ needs.extract_version.outputs.version }}.xpi"
+      - name: Download Artifact
+        id: download_artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: "${{ needs.extract_version.outputs.version }}.xpi"
+          path: "${{ github.workspace }}/build/${{ needs.extract_version.outputs.version }}.xpi"
            
       - name: Create Release
         uses: softprops/action-gh-release@v1
