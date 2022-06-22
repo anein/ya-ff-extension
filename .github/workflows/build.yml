@@ -25,10 +25,16 @@ jobs:
       
    # Build extention
     - name: "web-ext build"
-      id: web_ext_build
+      id: ext_build
       if: ${{ inputs.version }}
       uses: kewisch/action-web-ext@v1
       with:
         cmd: build
         source: src
         filename: "{name}-${{ inputs.version }}.xpi"
+    
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.ext_build.outputs.name }}
+        path: ${{ steps.ext_build.outputs.target }}
