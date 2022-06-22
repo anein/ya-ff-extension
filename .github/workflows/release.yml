@@ -8,20 +8,28 @@ on:
 jobs:
   extract_version:
     uses: ./.github/workflows/version.yml
+  
+  ext_build:
+    needs: [extract_version]
     
-  build:
+    uses: ./.github/workflows/build.yml
+    with:
+          version: ${{ needs.extract_version.outputs.version }}
+    
+  
+  release:
     runs-on: ubuntu-latest
     
-    needs: [ extract_version ]
+    needs: [ ext_build ]
     
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Show release version
-        run: echo "Extension version is ${{ needs.extract_version.outputs.version }}"
+        run: echo "Extension version is ${{ jobs.extract_version.outputs.version }}"
       
-      - name: Build
-        uses: ./.github/workflows/build.yml
-        with:
-          version: ${{ needs.extract_version.outputs.version }}
+#       - name: Build
+#         uses: ./.github/workflows/build.yml
+#         with:
+#           version: ${{ needs.extract_version.outputs.version }}
