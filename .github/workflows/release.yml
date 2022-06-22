@@ -34,8 +34,7 @@ jobs:
         id: download_artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ needs.extract_version.outputs.version }}.xpi
-          path: ${{ needs.extract_version.outputs.version }}.xpi
+          path: ./
       
       - run: |
           ls .
@@ -46,4 +45,4 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ needs.extract_version.outputs.version }}
-            files: ${{ github.workspace }}/build/${{ needs.extract_version.outputs.version }}.xpi
+            files: ya.xpi
