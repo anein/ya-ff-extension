@@ -9,16 +9,17 @@ jobs:
   extract_version:
     uses: ./.github/workflows/version.yml
   
-  ext_build:    
+  ext_build:
+    needs: extract_version
     uses: ./.github/workflows/build.yml
     with:
-      version: ${{ jobs.extract_version.outputs.version }}
+      version: ${{ needs.extract_version.outputs.version }}
     
   
   release:
     runs-on: ubuntu-latest
     
-    needs: [ extract_version, ext_build ]
+    needs: [ ext_build ]
     
     steps:
       - name: Check out repository
