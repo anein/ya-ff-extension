@@ -34,15 +34,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: "${{ needs.extract_version.outputs.version }}.xpi"
-          path: "${{ needs.ext_build.outputs.target }}"
+          path: "~/${{ needs.extract_version.outputs.version }}.xpi"
           
       - name: Path
-        run: echo "${{ steps.download_artifact.outputs.artifact-name }}"
+        run: ls .
     
-      - name: Path
-        run: echo  ${{ toJSON(steps.download_artifact.outputs) }}
-        
-       
       
 #       - name: Create Release
 #         uses: softprops/action-gh-release@v1
