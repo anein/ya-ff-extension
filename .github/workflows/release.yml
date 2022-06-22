@@ -36,7 +36,13 @@ jobs:
           name: "${{ needs.extract_version.outputs.version }}.xpi"
           path: "${{ needs.ext_build.outputs.target }}"
           
-      - uses: crazy-max/ghaction-dump-context@v1
+      - name: Path
+        run: echo "${{ steps.download_artifact.outputs.artifact-name }}"
+    
+      - name: Path
+        run: echo  ${{ fromJSON(steps.download_artifact.outputs) }}
+        
+       
       
 #       - name: Create Release
 #         uses: softprops/action-gh-release@v1
