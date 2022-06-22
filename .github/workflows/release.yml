@@ -37,7 +37,7 @@ jobs:
           path: "${{ needs.ext_build.outputs.target }}"
           
       - name: Show artifact path
-        run: echo ${{ steps.download_artifact.outputs.artifact-prefix }}
+        run: echo ${{ steps.download_artifact.outputs }}
       
 #       - name: Create Release
 #         uses: softprops/action-gh-release@v1
