@@ -22,6 +22,9 @@ jobs:
    steps:
     - name: "Checkout"
       uses: actions/checkout@v3
+    
+    - name: "Show extension verion"
+      run: echo ${{ inputs.vesion }}
       
    # Build extention
     - name: "web-ext build"
