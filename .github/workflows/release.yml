@@ -45,4 +45,4 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ needs.extract_version.outputs.version }}
-            files: ya.xpi
+            files: ${{ needs.extract_version.outputs.version }}
