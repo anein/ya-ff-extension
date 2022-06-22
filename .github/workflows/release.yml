@@ -11,7 +11,7 @@ jobs:
   
   ext_build:
     needs: extract_version
-    if: ${{ needs.extract_version.outputs.version != 'undefined' || needs.extract_version.outputs.version != '' }}
+    if: ${{ needs.extract_version.outputs.version != '' }}
     uses: ./.github/workflows/build.yml
     with:
       version: ${{ needs.extract_version.outputs.version }}
@@ -27,9 +27,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Show release version
-        run: echo "Extension version is 1"
-      
-#       - name: Build
-#         uses: ./.github/workflows/build.yml
-#         with:
-#           version: ${{ needs.extract_version.outputs.version }}
+        run: echo "Extension version is ${{ jobs.extract_version.outputs.version }}"
+    
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            tag_name: ${{ jobs.extract_version.outputs.version }}
+            files: ${{ needs.ext_build.outputs.target }}
+
