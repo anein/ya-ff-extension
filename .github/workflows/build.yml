@@ -30,4 +30,4 @@ jobs:
       with:
         cmd: build
         source: src
-        filename: "{name}-{inputs.version}.xpi"
+        filename: "{name}-{inputs.ext_version}.xpi"
