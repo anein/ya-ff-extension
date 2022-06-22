@@ -20,7 +20,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     
-    needs: [ extract_version, ext_build ]
+    needs: [ extract_version  ]
     
     steps:
       - name: Check out repository
@@ -30,19 +30,25 @@ jobs:
         run: echo "Extension version is ${{ needs.extract_version.outputs.version }}"
       - run: ls .
       
-      - name: Download Artifact
-        id: download_artifact
-        uses: actions/download-artifact@v3
+      # Build extention
+      - name: "web-ext build"
+        id: web-ext-build
+        uses: kewisch/action-web-ext@v1
         with:
-          path: ./
-      
-      - run: |
-          ls .
-      
-      - name: Create Release
+          cmd: build
+          source: src
+          filename: "{name}-${{ needs.extract_version.outputs.version }}.xpi"
+
+      # Check building
+      - name: Check building
+        run: |
+          ls -la web-ext-artifacts
+
+      # Create  Release
+      - name: "Create Release"
         uses: softprops/action-gh-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-            tag_name: ${{ needs.extract_version.outputs.version }}
-            files: ${{ needs.extract_version.outputs.version }}
+            tag_name: ${{ steps.get_version.outputs.EXTENSION_VERSION }}
+            files: ${{ steps.web-ext-build.outputs.target }}
