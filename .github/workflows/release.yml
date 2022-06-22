@@ -14,7 +14,7 @@ jobs:
     
     uses: ./.github/workflows/build.yml
     with:
-          version: ${{ needs.extract_version.outputs.version }}
+      version: ${{ needs.extract_version.outputs.version }}
     
   
   release:
