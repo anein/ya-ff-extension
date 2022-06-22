@@ -35,17 +35,11 @@ jobs:
         with:
           name: "${{ needs.extract_version.outputs.version }}.xpi"
           path: "${{ github.workspace }}/${{ needs.extract_version.outputs.version }}.xpi"
-          
-      - run: readlink -f "./${{ needs.extract_version.outputs.version }}.xpi"
-      
-      - run: ls .
-        
+           
       - name: Create Release
         uses: softprops/action-gh-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ needs.extract_version.outputs.version }}
-            files: |
-                ${{ steps.download_artifact.outputs.download-path }}
-                *.xpi
+            files: ${{ steps.download_artifact.outputs.download-path }}
