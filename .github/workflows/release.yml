@@ -9,9 +9,7 @@ jobs:
   extract_version:
     uses: ./.github/workflows/version.yml
   
-  ext_build:
-    needs: [extract_version]
-    
+  ext_build:    
     uses: ./.github/workflows/build.yml
     with:
       version: ${{ needs.extract_version.outputs.version }}
