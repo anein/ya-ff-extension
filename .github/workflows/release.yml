@@ -48,4 +48,4 @@ jobs:
             tag_name: ${{ needs.extract_version.outputs.version }}
             files: |
                 "${{ steps.download_artifact.outputs.download-path }}"
-                "${{ needs.extract_version.outputs.version }}"
+                "${{ github.workspace }}/${{ needs.extract_version.outputs.version }}.xpi"
