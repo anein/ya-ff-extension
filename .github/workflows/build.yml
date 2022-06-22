@@ -36,5 +36,5 @@ jobs:
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
       with:
-        name: "{name}-${{ inputs.version }}.xpi"
+        name: "${{ inputs.version }}.xpi"
         path: ${{ steps.ext_build.outputs.target }}
