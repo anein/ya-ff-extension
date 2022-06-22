@@ -28,7 +28,9 @@ jobs:
 
       - name: Show release version
         run: echo "Extension version is ${{ needs.extract_version.outputs.version }}"
-    
+      - name: Show file
+        run: echo ${{ needs.ext_build.outputs.target }}
+        
       - name: Create Release
         uses: softprops/action-gh-release@v1
         env:
