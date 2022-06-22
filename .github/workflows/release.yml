@@ -47,5 +47,5 @@ jobs:
         with:
             tag_name: ${{ needs.extract_version.outputs.version }}
             files: |
-                "${{ steps.download_artifact.outputs.download-path }}"
-                "*.xpi"
+                ${{ steps.download_artifact.outputs.download-path }}
+                *.xpi
