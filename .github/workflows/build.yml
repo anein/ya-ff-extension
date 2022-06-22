@@ -31,10 +31,10 @@ jobs:
       with:
         cmd: build
         source: src
-        filename: "${{ inputs.version }}.xpi"
+        filename: "ya.xpi"
     
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ inputs.version }}.xpi
+        name: ya.xpi
         path: ${{ steps.ext_build.outputs.target }}
