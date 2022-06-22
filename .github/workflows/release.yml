@@ -36,7 +36,9 @@ jobs:
           name: "${{ needs.extract_version.outputs.version }}.xpi"
           path: "./${{ needs.extract_version.outputs.version }}.xpi"
           
-      - run: echo "${{ steps.download_artifact.outputs.download-path }}/${{ needs.extract_version.outputs.version }}.xpi"
+      - run: echo "${{ steps.download_artifact.outputs.download-path }}"
+      
+      - run: ls .
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -46,3 +48,4 @@ jobs:
             tag_name: ${{ needs.extract_version.outputs.version }}
             files: |
                 "${{ steps.download_artifact.outputs.download-path }}"
+                "${{ needs.extract_version.outputs.version }}.xpi"
