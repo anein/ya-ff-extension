@@ -10,6 +10,8 @@ The add-on has extra handy benefits:
 
 - Do not collect browser metadata.
 
+![](https://user-images.githubusercontent.com/435658/175088606-4b4d3865-94b5-45f8-bd6d-fa042a571be5.png)
+
 ______________
 
 Good luck!
