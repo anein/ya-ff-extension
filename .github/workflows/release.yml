@@ -36,8 +36,7 @@ jobs:
           name: "${{ needs.extract_version.outputs.version }}.xpi"
           path: "${{ needs.ext_build.outputs.target }}"
           
-      - name: Show artifact path
-        run: echo ${{ steps.download_artifact.outputs }}
+      - uses: hmarr/debug-action@v2
       
 #       - name: Create Release
 #         uses: softprops/action-gh-release@v1
