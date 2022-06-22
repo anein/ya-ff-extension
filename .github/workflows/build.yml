@@ -33,6 +33,11 @@ jobs:
         source: src
         filename: "ya.xpi"
     
+    # Check building
+    - name: Check building
+      run: |
+        ls -la web-ext-artifacts
+        
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
       with:
