@@ -4,13 +4,25 @@ on:
   workflow_call:
     inputs:
       version:
+        description: "A version number of the extension."
         required: true
         type: string
         
+      state:
+        description: "A state of the extension. Suppose there are two states: signed and unsigned." 
+        required: false
+        type: string
+        default: "unsigned"
+      
+   
     outputs:
       target:
         description: "The output build target"
         value: ${{ jobs.build.outputs.target }}
+        
+      filename:
+        description: "The output filename"
+        value: ${{ steps.set_name.outputs.filename }}
   
 jobs:
   build:
@@ -18,20 +30,25 @@ jobs:
   
    outputs:
     target: ${{ steps.web_ext_build.outputs.target }}
+    filename: ${{ steps.set_name.outputs.filename }}
    
    steps:
     - name: "Checkout"
       uses: actions/checkout@v3
+    
+    - name: "Set extension name"
+      id: set_name
+      run: echo "::set-output name=filename::${{ inputs.version }}-${{ inputs.state }}.xpi"
       
    # Build extention
     - name: "web-ext build"
       id: ext_build
-      if: ${{ inputs.version }}
+      if: ${{ inputs.version != '' }}
       uses: kewisch/action-web-ext@v1
       with:
         cmd: build
         source: src
-        filename: "${{ inputs.version }}.xpi"
+        filename: "${{ steps.set_name.outputs.filename }}"
     
     # Check building
     - name: Check building
