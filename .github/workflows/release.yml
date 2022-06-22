@@ -25,25 +25,12 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-
-#       - name: Show release version
-#         run: echo "Extension version is ${{ needs.extract_version.outputs.version }}"
-#       - run: ls .
-      
-#       # Build extention
-#       - name: "web-ext build"
-#         id: ext_build
-#         uses: kewisch/action-web-ext@v1
-#         with:
-#           cmd: build
-#           source: src
-#           filename: "{name}-${{ needs.extract_version.outputs.version }}.xpi"
       
       - name: Download Artifact
         id: download_artifact
         uses: actions/download-artifact@v3
         with:
-          path: ./
+          path: ./artifact
       
       # Check downloaded artifact
       - run: ls -R
