@@ -29,8 +29,6 @@ jobs:
       - name: Show release version
         run: echo "Extension version is ${{ needs.extract_version.outputs.version }}"
       
-      - run: ls .
-      
       - name: Download Artifact
         id: download_artifact
         uses: actions/download-artifact@v3
@@ -39,12 +37,12 @@ jobs:
           path: "${{ needs.ext_build.outputs.target }}"
           
       - name: Show artifact path
-        run: echo ${{ steps.download_artifact.outputs.download-path }}
+        run: echo ${{ steps.download_artifact.outputs.artifact-prefix }}
       
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-            tag_name: ${{ needs.extract_version.outputs.version }}
-            files:  "${{ needs.extract_version.outputs.version }}.xpi"
+#       - name: Create Release
+#         uses: softprops/action-gh-release@v1
+#         env:
+#             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#             tag_name: ${{ needs.extract_version.outputs.version }}
+#             files:  "${{ needs.extract_version.outputs.version }}.xpi"
