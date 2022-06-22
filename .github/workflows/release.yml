@@ -47,7 +47,8 @@ jobs:
       
       # Check downloaded artifact
       - run: ls -R
-
+      - run: ls "${{ needs.extract_version.outputs.version }}/${{  needs.extract_version.outputs.version }}.xpi"
+      
       # Create  Release
       - name: "Create Release"
         uses: softprops/action-gh-release@v1
@@ -55,4 +56,4 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{  needs.extract_version.outputs.version }}
-            files: "${{ steps.download_artifact.outputs.download-path }}"
+            files: "${{ needs.extract_version.outputs.version }}/${{  needs.extract_version.outputs.version }}.xpi"
