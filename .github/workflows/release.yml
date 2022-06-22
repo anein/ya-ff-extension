@@ -38,11 +38,13 @@ jobs:
           
       - name: Show artifact path
         run: echo ${{ steps.download_artifact.outputs.download-path }}
-        
+      
+      - run: ls .
+      
       - name: Create Release
         uses: softprops/action-gh-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ needs.extract_version.outputs.version }}
-            files: ${{ steps.download_artifact.outputs.download-path }}
+            files: "${{ steps.download_artifact.outputs.download-path }}"
