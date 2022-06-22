@@ -31,7 +31,7 @@ jobs:
       with:
         cmd: build
         source: src
-        filename: "ya.xpi"
+        filename: "${{ inputs.version }}.xpi"
     
     # Check building
     - name: Check building
@@ -41,5 +41,5 @@ jobs:
     - name: Archive extension
       uses: actions/upload-artifact@v3
       with:
-        name: ya.xpi
+        name: ${{ inputs.version }}
         path: ${{ steps.ext_build.outputs.target }}
