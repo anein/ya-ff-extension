@@ -24,8 +24,8 @@ jobs:
       uses: actions/checkout@v3
     
     - name: "Show extension verion"
-      if: ${{ inputs.version }}
-      run: echo ${{ inputs.vesion }}
+      if: ${{ inputs.version != ' ' }}
+      run: echo ${{ inputs.version }}
       
    # Build extention
     - name: "web-ext build"
