@@ -36,7 +36,7 @@ jobs:
           name: "${{ needs.extract_version.outputs.version }}.xpi"
           path: "${{ github.workspace }}/${{ needs.extract_version.outputs.version }}.xpi"
           
-      - run: echo "${{ steps.download_artifact.outputs.download-path }}"
+      - run: readlink -f "./${{ needs.extract_version.outputs.version }}.xpi"
       
       - run: ls .
         
