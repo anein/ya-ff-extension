@@ -35,12 +35,16 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: "${{ needs.extract_version.outputs.version }}.xpi"
-          path: "${{ github.workspace }}/build/${{ needs.extract_version.outputs.version }}.xpi"
-           
+          path: ${{ github.workspace }}/build/${{ needs.extract_version.outputs.version }}.xpi
+      
+      - run: |
+          ls "${{ github.workspace }}/build/"
+          ls .
+      
       - name: Create Release
         uses: softprops/action-gh-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{ needs.extract_version.outputs.version }}
-            files: ${{ github.workspace }}/${{ needs.extract_version.outputs.version }}.xpi
+            files: ${{ github.workspace }}/build/${{ needs.extract_version.outputs.version }}.xpi
