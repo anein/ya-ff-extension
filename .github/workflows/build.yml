@@ -31,7 +31,7 @@ jobs:
       with:
         cmd: build
         source: src
-        filename: "{name}-${{ inputs.version }}.xpi"
+        filename: "${{ inputs.version }}.xpi"
     
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
