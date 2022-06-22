@@ -40,7 +40,7 @@ jobs:
         run: echo "${{ steps.download_artifact.outputs.artifact-name }}"
     
       - name: Path
-        run: echo  ${{ fromJSON(steps.download_artifact.outputs) }}
+        run: echo  ${{ toJSON(steps.download_artifact.outputs) }}
         
        
       
