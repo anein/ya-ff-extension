@@ -38,7 +38,7 @@ jobs:
       run: |
         ls -la web-ext-artifacts
         
-    - name: Archive code coverage results
+    - name: Archive extension
       uses: actions/upload-artifact@v3
       with:
         name: ya.xpi
