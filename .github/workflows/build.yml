@@ -1,34 +1,33 @@
-name: "Build"
+name: "Build Extension"
+
 on:
-  push:
-    tags:
-      - v*
+  workflow_call:
+    inputs:
+      ext_version:
+        required: true
+        type: string
+        
+    outputs:
+      target:
+        description: "The output build target"
+        value: ${{ jobs.build.outputs.target }}
+  
 jobs:
   build:
    runs-on: ubuntu-latest
+   
+   outputs:
+    target: ${{ steps.web_ext_build.outputs.target }}
+   
    steps:
     - name: "Checkout"
       uses: actions/checkout@v1
       
    # Build extention
     - name: "web-ext build"
-      id: web-ext-build
+      id: web_ext_build
       uses: kewisch/action-web-ext@v1
       with:
         cmd: build
         source: src
-        filename: "{name}-{version}.xpi"
-
-    # Check building
-    - name: Check building
-      run: |
-        ls -la web-ext-artifacts
-
-    # Create  Release
-    - name: "Create Release"
-      uses: softprops/action-gh-release@v1
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-          tag_name: ${{ steps.get_version.outputs.EXTENSION_VERSION }}
-          files: ${{ steps.web-ext-build.outputs.target }}
+        filename: "{name}-{inputs.version}.xpi"
