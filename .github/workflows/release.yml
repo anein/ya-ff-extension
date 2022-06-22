@@ -24,4 +24,4 @@ jobs:
       - name: Build
         uses: ./.github/workflows/build.yml
         with:
-          ext_version: ${{ needs.extract_version.outputs.version }}
+          version: ${{ needs.extract_version.outputs.version }}
