@@ -37,4 +37,3 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: "${{ inputs.version }}.xpi"
-        path: "${{ github.workspace }}/build/${{ steps.ext_build.outputs.target }}"
