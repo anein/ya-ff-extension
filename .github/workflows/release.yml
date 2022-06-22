@@ -28,7 +28,9 @@ jobs:
 
       - name: Show release version
         run: echo "Extension version is ${{ needs.extract_version.outputs.version }}"
-     
+      
+      - run: ls .
+      
       - name: Download Artifact
         id: download_artifact
         uses: actions/download-artifact@v3
@@ -38,8 +40,6 @@ jobs:
           
       - name: Show artifact path
         run: echo ${{ steps.download_artifact.outputs.download-path }}
-      
-      - run: ls .
       
       - name: Create Release
         uses: softprops/action-gh-release@v1
