@@ -9,12 +9,12 @@ jobs:
   extract_version:
     uses: ./.github/workflows/version.yml
   
-  ext_build:
-    needs: extract_version
-    if: ${{ needs.extract_version.outputs.version != '' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      version: ${{ needs.extract_version.outputs.version }}
+#   ext_build:
+#     needs: extract_version
+#     if: ${{ needs.extract_version.outputs.version != '' }}
+#     uses: ./.github/workflows/build.yml
+#     with:
+#       version: ${{ needs.extract_version.outputs.version }}
     
   
   release:
@@ -32,7 +32,7 @@ jobs:
       
       # Build extention
       - name: "web-ext build"
-        id: web-ext-build
+        id: ext_build
         uses: kewisch/action-web-ext@v1
         with:
           cmd: build
@@ -50,5 +50,5 @@ jobs:
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-            tag_name: ${{ steps.get_version.outputs.EXTENSION_VERSION }}
-            files: ${{ steps.web-ext-build.outputs.target }}
+            tag_name: ${{  needs.extract_version.outputs.version }}
+            files: ${{ steps.ext_build.outputs.target }}
