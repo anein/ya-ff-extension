@@ -2,15 +2,15 @@ name: "Release"
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - v*
 
 jobs:
   extract_version:
     uses: ./.github/workflows/version.yml
   
   ext_build:
-    needs: extract_version
+    needs: [ extract_version ]
     if: ${{ needs.extract_version.outputs.version != '' }}
     uses: ./.github/workflows/build.yml
     with:
@@ -23,27 +23,24 @@ jobs:
     needs: [ extract_version, ext_build ]
     
     env:
-      EXTENSION_NAME: "${{ needs.extract_version.outputs.version }}/${{  needs.ext_build.outputs.filename }}"
+      EXTENSION_PATH: "${{ needs.extract_version.outputs.version }}/${{  needs.ext_build.outputs.filename }}"
       
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
       
       - name: Download Artifact
-        id: download_artifact
         uses: actions/download-artifact@v3
         with:
           path: ./
       
-      # Check downloaded artifact
       - run: ls -R
       
-      # Create  Release
       - name: "Create Release"
-        if: hashFiles('${{ env.EXTENSION_NAME }}') != ''
+        if: hashFiles('${{ env.EXTENSION_PATH }}') != ''
         uses: softprops/action-gh-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{  needs.extract_version.outputs.version }}
-            files: "${{ env.EXTENSION_NAME }}"
+            files: "${{ env.EXTENSION_PATH }}"
