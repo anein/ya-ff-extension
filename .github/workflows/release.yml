@@ -22,6 +22,9 @@ jobs:
     
     needs: [ extract_version, ext_build ]
     
+    env:
+      EXTENSION_NAME: "${{ needs.extract_version.outputs.version }}/${{  needs.ext_build.outputs.filename }}"
+      
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -37,10 +40,10 @@ jobs:
       
       # Create  Release
       - name: "Create Release"
-        if: hashFiles('${{ needs.extract_version.outputs.version }}/${{  needs.extract_version.outputs.version }}.xpi') != ''
+        if: hashFiles('${{ env.EXTENSION_NAME }}') != ''
         uses: softprops/action-gh-release@v1
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             tag_name: ${{  needs.extract_version.outputs.version }}
-            files: "${{ needs.extract_version.outputs.version }}/${{  needs.extract_version.outputs.version }}.xpi"
+            files: "${{ env.EXTENSION_NAME }}"
