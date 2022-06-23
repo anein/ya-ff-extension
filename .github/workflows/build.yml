@@ -22,14 +22,14 @@ on:
         
       filename:
         description: "The output filename"
-        value: ${{ steps.set_name.outputs.filename }}
+        value: ${{ jobs.build.outputs.filename }}
   
 jobs:
   build:
    runs-on: ubuntu-latest
   
    outputs:
-    target: ${{ steps.web_ext_build.outputs.target }}
+    target: ${{ steps.ext_build.outputs.target }}
     filename: ${{ steps.set_name.outputs.filename }}
    
    steps:
