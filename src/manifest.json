@@ -26,6 +26,9 @@
       "search_url": "https://__MSG_search_url__/search/?text={searchTerms}"
     }
   },
+  "options": {
+    "page": "options/options.html"
+  },
   "browser_action": {
     "browser_style": true,
     "default_title": "__MSG_browser_action_title__",
