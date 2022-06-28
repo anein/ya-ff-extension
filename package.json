@@ -15,10 +15,13 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint ./src/background/",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "web-ext:run": "web-ext run --source-dir src/",
+    "web-ext:lint": "web-ext lint --source-dir src/"
   },
   "devDependencies": {
     "eslint": "^8.16.0",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "web-ext": "^7.1.0"
   }
 }
