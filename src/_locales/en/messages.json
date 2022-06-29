@@ -19,5 +19,29 @@
   },
   "browser_action_url": {
     "message": "https://yandex.com"
+  },
+  "ya_search_title": {
+    "message": "Yandex Search Default"
+  },
+  "ya_search_description": {
+    "message": "Indicates that the Yandex Search Engine is set as a default search."
+  },
+  "ya_fonts_title": {
+    "message": "Use Arial font"
+  },
+  "ya_fonts_description": {
+    "message": "Replace the YA font with classic Arail."
+  },
+  "ya_font_size_title": {
+    "message": "Improve fonts size and styles"
+  },
+  "ya_font_size_description": {
+    "message": "Increase font size and spacing between paragraphs."
+  },
+  "ya_side_panel_title": {
+    "message": "Remove side panel"
+  },
+  "ya_side_panel_description": {
+    "message": "Turn off the right panel on the Yandex search result page."
   }
 }
