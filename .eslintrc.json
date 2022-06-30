@@ -5,6 +5,16 @@
     "webextensions": true
   },
   "extends": [
-    "eslint:recommended"
-  ]
+    "eslint:recommended",
+    "airbnb-base/legacy"
+  ],
+  "rules": {
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false
+      }
+    ]
+  }
 }
