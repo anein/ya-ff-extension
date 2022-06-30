@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 // key name for storing and retreving data from the local storage
-const options_key = 'options';
+const OPTIONS_KEY = 'options';
 
 // default option names and values
 let options = {
-  ya_search: true,
+  ya_search: false,
   ya_fonts: false,
   ya_font_size: false,
   ya_side_panel: false
@@ -20,69 +20,79 @@ function onError(error) {
   console.log(error);
 }
 
-
 function onDataLoaded(data) {
-
   if (Object.entries(data).length !== 0) {
     options = data;
   }
 
-  const container = document.querySelector(".container");
-  let content = "";
+  const container = document.querySelector('.container');
 
-  for (const [index, [name, state]] of Object.entries(Object.entries(options))) {
-    let stateContent = ""
+  // Stores all elements of available options.
+  let optionsElements = '';
 
-    if (~~index === 0) {
-      stateContent = createCheckmark(state)
-    } else {
-      stateContent = createCheckbox(name, state)
-    }
+  // loop over options and create elements for the popup menu
+  Object.entries(options).forEach((value, index) => {
+    const [name, state] = [...value];
 
-    content += createOptionElement(name, stateContent);
-  }
+    let stateElement = (index === 0) ? createCheckmark(state) : createCheckbox(name, state);
+    optionsElements += createOptionElement(name, state, stateElement);
+  });
 
-  container.innerHTML = content;
+  container.innerHTML = optionsElements;
 }
 
 /**
+ * Composites html elements of option.
  *
  * @param {string} name - option name
  * @param {boolean} state - option state
+ * @param {string} stateElement - customized state element for the state column
  */
-function createOptionElement(name, state) {
+function createOptionElement(name, state, stateElement) {
   //
-  const title = browser.i18n.getMessage(name + "_title");
-  const description = browser.i18n.getMessage(name + "_description");
+  const title = browser.i18n.getMessage(name + '_title');
+  const description = browser.i18n.getMessage(name + '_description');
 
   return `
-  <section class="option-container">
+  <section class="option-container ${state ? 'active' : ''}">
     <div class="option-item">
       <div>
           <div class="title">${title}</div>
-          <div class="tip">
-          ${description}
-        </div>
+          <div class="tip">${description}</div>
       </div>
-      <div class="state">${state} </div>
+      <div class="state">${stateElement}</div>
     </div>
 
   </section>
-  `
-
+  `;
 }
 
+/**
+ * Creates the 'checkmark' icon  if state is true, otherwise the `close` icon.
+ *
+ * @param {boolean} state
+ *
+ * @returns {string} A "i" element with the specific icon class.
+ *
+ */
 function createCheckmark(state) {
-  return (state) ? `<i class="checkmark"></i>` : `<i class="checkmark-no"></i>`
+  return (state) ? '<i class="checkmark"></i>' : '<i class="checkmark-no"></i>';
 }
 
-function createCheckbox(name, state) {
+/**
+ * Creates a checkbox element.
+ *
+ * @param {string} name - checkbox name
+ * @param {boolean} checked - checkbox state
+ *
+ * @returns {string} A checkbox element
+ */
+function createCheckbox(name, checked) {
   return `
      <label class="switch">
-        <input type="checkbox" ${(state) ? "checked" : ""} name="${name}_checkbox">
+        <input type="checkbox" ${(checked) ? 'checked' : ''} name="${name}_checkbox">
         <span class="slider"></span>
-    </label>`
+    </label>`;
 }
 
-
-browser.storage.local.get(options_key).then(onDataLoaded, onError)
+browser.storage.local.get(OPTIONS_KEY).then(onDataLoaded, onError);
