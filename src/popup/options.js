@@ -1,6 +1,6 @@
 'use strict';
 
-// key name for storing and retreving data from the local storage
+// key name for storing and retrieving data from the local storage. Basically, for retrieving.
 const OPTIONS_STORAGE_KEY = 'options';
 
 // default option names and values
@@ -35,6 +35,8 @@ function onDataLoaded(options) {
   });
 
   container.innerHTML = optionsElements;
+
+  setInputLinters();
 }
 
 /**
@@ -68,7 +70,7 @@ function createOptionElement(name, state, stateElement) {
  *
  * @param {boolean} state
  *
- * @returns {string} A "i" element with the specific icon class.
+ * @returns {string} An "i" element with the specific icon class.
  *
  */
 function createCheckmark(state) {
@@ -86,14 +88,44 @@ function createCheckmark(state) {
 function createCheckbox(name, checked) {
   return `
      <label class="switch">
-        <input type="checkbox" ${(checked) ? 'checked' : ''} name="${name}_checkbox">
+        <input type="checkbox" ${(checked) ? 'checked' : ''} name="${name}">
         <span class="slider"></span>
     </label>`;
 }
 
+/**
+ * Sets input listeners on checkboxes, and save it to the storage on a state change.
+ */
+function setInputLinters() {
+  const container = document.querySelector('.container');
+
+  const inputs = container.querySelectorAll("input[type='checkbox']");
+
+  inputs.forEach((element) => {
+    element.addEventListener('change', (event) => {
+      // console.log(event.target.checked, event.target.name);
+      saveOptions(event.target.name, event.target.checked);
+    });
+  });
+}
+
+/**
+ * Saves an option to the storage.
+ *
+ * @param {string} name - option name
+ * @param {boolean} value - option state
+ */
+function saveOptions(name, value) {
+  browser.storage.local.get(OPTIONS_STORAGE_KEY).then((data) => {
+    const options = Object.entries(data).length === 0 ? DEFAULT_OPTIONS : data.options;
+    options[name] = value;
+    browser.storage.local.set({ options });
+  });
+}
+
 // load settings from the storage
 browser.storage.local.get(OPTIONS_STORAGE_KEY).then((data) => {
-  // checking existance of options in the local storage
+  // checking existence of options in the local storage
   const options = Object.entries(data).length === 0 ? DEFAULT_OPTIONS : data.options;
 
   // getting search engine name
@@ -112,6 +144,4 @@ browser.storage.local.get(OPTIONS_STORAGE_KEY).then((data) => {
 
     onDataLoaded(options);
   });
-
-  // onDataLoaded(data);
 }, onError);
