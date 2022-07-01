@@ -31,7 +31,7 @@ body {
 }
 
 .option-container:first-child.active {
-  background-color: rgb(63 162 72/ 7%);
+  background-color: rgb(63 162 72/ 10%);
   border-bottom-color: rgb(63 162 72/ 40%);
 }
 
@@ -168,4 +168,46 @@ input:focus + .slider {
 
 .checkmark-no::after {
   transform: rotate(-45deg);
+}
+
+.checkmark-sad {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border: 2px solid;
+  border-radius: 100px;
+
+  /* transform: scale(var(--ggs, 1)); */
+}
+
+.checkmark-sad::after,
+.checkmark-sad::before {
+  position: absolute;
+  left: 4px;
+  display: block;
+  box-sizing: border-box;
+  content: "";
+}
+
+.checkmark-sad::before {
+  top: 5px;
+  width: 2px;
+  height: 2px;
+  background: currentcolor;
+  border-radius: 50%;
+  box-shadow: 6px 0 0;
+}
+
+.checkmark-sad::after {
+  top: 9px;
+  width: 8px;
+  height: 4px;
+  border: 2px solid;
+  border-top-color: transparent;
+  border-radius: 150px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transform: scaleY(-1);
 }

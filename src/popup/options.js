@@ -1,10 +1,10 @@
 'use strict';
 
 // key name for storing and retreving data from the local storage
-const OPTIONS_KEY = 'options';
+const OPTIONS_STORAGE_KEY = 'options';
 
 // default option names and values
-let options = {
+const DEFAULT_OPTIONS = {
   ya_search: false,
   ya_fonts: false,
   ya_font_size: false,
@@ -20,11 +20,7 @@ function onError(error) {
   console.log(error);
 }
 
-function onDataLoaded(data) {
-  if (Object.entries(data).length !== 0) {
-    options = data;
-  }
-
+function onDataLoaded(options) {
   const container = document.querySelector('.container');
 
   // Stores all elements of available options.
@@ -76,7 +72,7 @@ function createOptionElement(name, state, stateElement) {
  *
  */
 function createCheckmark(state) {
-  return (state) ? '<i class="checkmark"></i>' : '<i class="checkmark-no"></i>';
+  return (state) ? '<i class="checkmark"></i>' : '<i class="checkmark-sad"></i>';
 }
 
 /**
@@ -95,4 +91,27 @@ function createCheckbox(name, checked) {
     </label>`;
 }
 
-browser.storage.local.get(OPTIONS_KEY).then(onDataLoaded, onError);
+// load settings from the storage
+browser.storage.local.get(OPTIONS_STORAGE_KEY).then((data) => {
+  // checking existance of options in the local storage
+  const options = Object.entries(data).length === 0 ? DEFAULT_OPTIONS : data.options;
+
+  // getting search engine name
+  const searchEngineName = browser.runtime.getManifest()
+    .chrome_settings_overrides
+    .search_provider
+    .name;
+
+  // checking if the engine sets as default, then draw popup.
+  browser.search.get().then((results) => {
+    let isDefaultEngine = !!(results.find((elem) => {
+      return (elem.name === searchEngineName && elem.isDefault);
+    }));
+
+    options.ya_search = isDefaultEngine;
+
+    onDataLoaded(options);
+  });
+
+  // onDataLoaded(data);
+}, onError);
