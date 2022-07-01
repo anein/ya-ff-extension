@@ -19,5 +19,29 @@
   },
   "browser_action_url": {
     "message": "https://ya.ru"
+  },
+  "ya_search_title": {
+    "message": "Поиск Яндекс"
+  },
+  "ya_search_description": {
+    "message": "Отображает информаию о том, установлен ли поиск Яндекс по умолчанию."
+  },
+  "ya_fonts_title": {
+    "message": "Использовать шрифт Arial"
+  },
+  "ya_fonts_description": {
+    "message": "Заменяет шриф Яндекса на классический Arial."
+  },
+  "ya_font_size_title": {
+    "message": "Улучшить шрифт и стили"
+  },
+  "ya_font_size_description": {
+    "message": "Увеличивает размер шрифта и  расстояния между параграфами на странице выдачи."
+  },
+  "ya_side_panel_title": {
+    "message": "Убрать боковую панель"
+  },
+  "ya_side_panel_description": {
+    "message": "Удаляет боковую панель с подсказками на странице выдачи."
   }
 }

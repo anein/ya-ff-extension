@@ -21,7 +21,7 @@
     "message": "https://yandex.com"
   },
   "ya_search_title": {
-    "message": "Yandex Search Default"
+    "message": "Yandex Search Engine"
   },
   "ya_search_description": {
     "message": "Indicates that the Yandex Search Engine is set as a default search."
@@ -30,7 +30,7 @@
     "message": "Use Arial font"
   },
   "ya_fonts_description": {
-    "message": "Replace the YA font, YS Text, with classic Arail."
+    "message": "Replace the YS Text font with classic Arial."
   },
   "ya_font_size_title": {
     "message": "Improve fonts size and styles"
