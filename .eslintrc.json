@@ -6,7 +6,11 @@
   },
   "extends": [
     "eslint:recommended",
-    "airbnb-base/legacy"
+    "airbnb-base/legacy",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
   ],
   "rules": {
     "no-use-before-define": [
@@ -15,6 +19,7 @@
         "functions": false,
         "classes": false
       }
-    ]
+    ],
+    "prettier/prettier": "error"
   }
 }
