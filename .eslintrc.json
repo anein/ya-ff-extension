@@ -12,6 +12,9 @@
   "plugins": [
     "prettier"
   ],
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
   "rules": {
     "no-use-before-define": [
       "error",
