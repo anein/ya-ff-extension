@@ -24,13 +24,13 @@
     "message": "Yandex Search Engine"
   },
   "ya_search_description": {
-    "message": "Indicates that the Yandex Search Engine is set as a default search."
+    "message": "Indicate that the Yandex Search Engine is set as a default search."
   },
   "ya_fonts_title": {
     "message": "Use Arial font"
   },
   "ya_fonts_description": {
-    "message": "Replace the YS Text font with classic Arial."
+    "message": "Replaces the YS Text font with classic Arial."
   },
   "ya_font_size_title": {
     "message": "Improve fonts size and styles"

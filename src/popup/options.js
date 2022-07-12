@@ -1,25 +1,10 @@
 "use strict";
 
-// key name for storing and retrieving data from the local storage. Basically, for retrieving.
-const OPTIONS_STORAGE_KEY = "options";
-
-// default option names and values
-const DEFAULT_OPTIONS = {
-  ya_search: false,
-  ya_fonts: false,
-  ya_font_size: false,
-  ya_side_panel: false,
-};
-
 /**
- * Shows an error in the console.
+ * Builds the popup page based on the given options and sets listeners for changing state.
  *
- * @param {any} error - an error message.
+ * @param options
  */
-function onError(error) {
-  console.log(error);
-}
-
 function onDataLoaded(options) {
   const container = document.querySelector(".container");
 
@@ -57,7 +42,7 @@ function createOptionElement(name, state, stateElement) {
     <div class="option-item">
       <div>
           <div class="title">${title}</div>
-          <div class="tip">${description}</div>
+          ${description ? `<div class="tip">${description}</div>` : ""}
       </div>
       <div class="state">${stateElement}</div>
     </div>
@@ -111,44 +96,47 @@ function setInputLinters() {
 }
 
 /**
- * Saves an option to the storage.
+ * Saves an option to the storage and update a page view.
+ *
+ * @see {module:background.saveOptions}
+ * @see {module:background.registerCSSAndScripts}
  *
  * @param {string} name - option name
  * @param {boolean} value - option state
  */
-function saveOptions(name, value) {
-  browser.storage.local.get(OPTIONS_STORAGE_KEY).then((data) => {
-    const options =
-      Object.entries(data).length === 0 ? DEFAULT_OPTIONS : data.options;
-    options[name] = value;
-
-    // send message to the background script to inject or remove content script
-    browser.storage.local.set({ options }).then(() => {
-      browser.runtime.sendMessage({
-        type: "updateOptions",
-        options,
-      });
+async function saveOptions(name, value) {
+  try {
+    const options = await browser.runtime.sendMessage({
+      type: "setOptions",
+      name,
+      value,
     });
-  });
+
+    if (typeof options === "object") {
+      browser.runtime
+        .sendMessage({
+          type: "updateOptions",
+          options,
+        })
+        .catch(() => null);
+    }
+  } catch (error) {
+    //
+  }
 }
 
-// load settings from the storage
-browser.storage.local.get(OPTIONS_STORAGE_KEY).then((data) => {
-  // checking existence of options in the local storage
-  const options =
-    Object.entries(data).length === 0 ? DEFAULT_OPTIONS : data.options;
+/**
+ * Initializes the popup page.
+ *
+ * @see {module:background.getOptions}
+ */
+async function init() {
+  try {
+    const data = await browser.runtime.sendMessage({ type: "getOptions" });
+    onDataLoaded(data);
+  } catch (error) {
+    //
+  }
+}
 
-  // getting search engine name
-  const searchEngineName =
-    browser.runtime.getManifest().chrome_settings_overrides.search_provider
-      .name;
-
-  // checking if the engine sets as default, then draw popup.
-  browser.search.get().then((results) => {
-    options.ya_search = !!results.find((elem) => {
-      return elem.name === searchEngineName && elem.isDefault;
-    });
-
-    onDataLoaded(options);
-  });
-}, onError);
+init();

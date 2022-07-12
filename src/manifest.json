@@ -16,6 +16,21 @@
       "background/background.js"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://yandex.ru/search/*",
+        "*://yandex.com/search/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "content/content.js"
+      ],
+      "css": [
+        "content/content.css"
+      ]
+    }
+  ],
   "chrome_settings_overrides": {
     "search_provider": {
       "name": "Yandex",
@@ -40,7 +55,7 @@
   "permissions": [
     "storage",
     "search",
-    "scripting",
-    "*://yandex.ru/search/*"
+    "*://yandex.ru/search/*",
+    "*://yandex.com/search/*"
   ]
 }

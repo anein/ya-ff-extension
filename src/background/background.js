@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * @module background
+ */
+
 const DEFAULT_OPTIONS = {
   ya_search: false,
   ya_fonts: false,
@@ -7,87 +11,140 @@ const DEFAULT_OPTIONS = {
   ya_side_panel: false,
 };
 
-// let scriptRegistered = null;
+const urlMatches = browser.runtime.getManifest().content_scripts[0].matches;
 
-// Write default options on installed.
-browser.runtime.onInstalled.addListener(() => {
-  browser.storage.local.set({ DEFAULT_OPTIONS });
-});
+/**
+ * Registers CSS and Script files based on options, set on the option base,
+ * or using the default options.
+ *
+ */
+async function registerCSSAndScripts() {
+  let options = await getOptions();
+  let tabIds;
 
-browser.runtime.onStartup.addListener(() => {
-  console.log("Extension has started.");
-  registerScript(null);
-});
-
-// listen message from the popup script.
-browser.runtime.onMessage.addListener((message) => {
-  if (message.type === "updateOptions") {
-    registerScript(message.options);
-  }
-});
-
-async function registerScript(message) {
-  let options = message;
-
-  // if (scriptRegistered) {
-  //   scriptRegistered.unregister();
-  // }
-
-  if (options === null) {
-    // retrieve options from the storage.
-    let data = await browser.storage.local.get("options");
-    options =
-      Object.entries(data).length === 0 ? DEFAULT_OPTIONS : data.options;
+  try {
+    tabIds = await browser.tabs.query({
+      url: urlMatches,
+    });
+  } catch (e) {
+    return new Error(e);
   }
 
-  let registeredScripts = await browser.scripting.getRegisteredContentScripts();
-  let registeredScriptsIds = registeredScripts.map((script) => script.id);
   let optionsInactiveIds = Object.keys(options).filter(
     (element) => options[element] === false
   );
+
   let optionsActiveIds = Object.keys(options).filter(
     (element) => options[element] === true
   );
 
-  // get scripts for unload.
-  let intersectionActiveInactive = registeredScriptsIds.filter((value) =>
-    optionsInactiveIds.includes(value)
-  );
-
-  // remove disabled scripts from a list of registered scripts
-  registeredScriptsIds = registeredScriptsIds.filter(
-    (value) => intersectionActiveInactive.includes(value) === false
-  );
-
-  // keep only new scripts for adding
-  let optionsActiveList = optionsActiveIds.filter(
-    (value) => registeredScriptsIds.includes(value) === false
-  );
-
-  if (intersectionActiveInactive.length > 0) {
-    // remove inactive scripts if ones are  in the list.
-    await browser.scripting.unregisterContentScripts({
-      ids: intersectionActiveInactive,
+  if (optionsInactiveIds.length > 0) {
+    tabIds.forEach(({ id }) => {
+      browser.tabs.sendMessage(id, {
+        type: "removeStyles",
+        options: optionsInactiveIds,
+      });
     });
   }
 
-  if (optionsActiveList.length === 0) {
+  if (optionsActiveIds.length === 0) {
     return "Nothing to add";
   }
 
-  optionsActiveList = optionsActiveList.map((value) => {
-    return {
-      id: value,
-      matches: ["*://yandex.ru/search/*"],
-      css: [`content/${value}.css`],
-      persistAcrossSessions: false,
-    };
+  tabIds.forEach(({ id }) => {
+    browser.tabs.sendMessage(id, {
+      type: "addStyles",
+      options: optionsActiveIds,
+    });
   });
 
-  try {
-    await browser.scripting.registerContentScripts(optionsActiveList);
-  } catch (error) {
-    // console.error(error);
-  }
   return true;
 }
+
+/**
+ * Sets basic listeners for communication between scripts.
+ */
+function setListeners() {
+  // listen message from the popup script.
+  browser.runtime.onMessage.addListener((message) => {
+    switch (message.type) {
+      case "updateOptions":
+        return registerCSSAndScripts();
+
+      case "getOptions":
+        return getOptions();
+
+      case "setOptions":
+        return saveOptions(message.name, message.value);
+
+      case "getRegisteredScripts":
+        return getOnlyActiveOptions();
+
+      default:
+        return null;
+    }
+  });
+}
+
+/**
+ * Retrieves options from the storage.
+ */
+async function getOptions() {
+  let data;
+
+  try {
+    data = await browser.storage.local.get("options");
+  } catch (error) {
+    throw new Error("Cannot retrieve options from the storage.");
+  }
+
+  const options =
+    Object.entries(data).length === 0 ? DEFAULT_OPTIONS : data.options;
+
+  // getting search engine name
+  const searchEngineName =
+    browser.runtime.getManifest().chrome_settings_overrides.search_provider
+      .name;
+
+  // checking if the engine sets as default and then set a search engine flag.
+  const results = await browser.search.get();
+
+  options.ya_search = !!results.find(
+    (elem) => elem.name === searchEngineName && elem.isDefault
+  );
+
+  return options;
+}
+
+/**
+ * Loads and filters options by active state.
+ */
+async function getOnlyActiveOptions() {
+  const options = await getOptions();
+  return Object.keys(options).filter((element) => options[element] === true);
+}
+
+/**
+ * Saves a key-value pair of options to the storage.
+ */
+async function saveOptions(key, value) {
+  const options = await getOptions();
+
+  if (!(key in options)) {
+    throw new Error(`Options  doesn't have the ${key} key.`);
+  }
+
+  if (options[key] === value) {
+    return "Nothing to save";
+  }
+
+  options[key] = value;
+
+  browser.storage.local.set({ options }).catch((error) => {
+    throw new Error(error);
+  });
+
+  return options;
+}
+
+setListeners();
