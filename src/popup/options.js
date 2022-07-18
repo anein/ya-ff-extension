@@ -137,6 +137,14 @@ async function init() {
   } catch (error) {
     //
   }
+
+  //
+  document.querySelectorAll("[data-i18n]").forEach((item) => {
+    const [value, attr = null] = item.dataset.i18n.split("|");
+    const message = browser.i18n.getMessage(value);
+
+    attr ? item.setAttribute(attr, message) : (item.textContent = message);
+  });
 }
 
 init();

@@ -4,6 +4,16 @@
   box-sizing: border-box;
 }
 
+:root {
+  --color-main: rgb(34 34 34);
+  --color-tip: rgb(87 96 106);
+  --color-active: rgb(63 162 72/ 15%);
+  --color-active-bg: rgb(63 162 72/ 40%);
+  --color-inactive: rgb(87 96 106/ 15%);
+  --color-inactive-bg: rgb(87 96 106/ 40%);
+  --color-black: rgb(0 0 0);
+}
+
 html,
 body {
   width: 340px;
@@ -20,19 +30,19 @@ body {
 .option-container {
   margin-top: 10px;
   margin-bottom: 10px;
-  color: #222;
-  border-bottom: 1px solid rgb(0 0 0 / 5%);
+  color: var(--color-main);
+  border-bottom: 1px solid rgb(255 255 255);
 }
 
 .option-container:first-child {
   margin-top: 0;
-  background-color: rgb(87 96 106 / 10%);
-  border-bottom-color: rgb(87 96 106/ 40%);
+  background-color: var(--color-inactive);
+  border-bottom-color: var(--color-inactive-bg);
 }
 
 .option-container:first-child.active {
-  background-color: rgb(63 162 72/ 10%);
-  border-bottom-color: rgb(63 162 72/ 40%);
+  background-color: var(--color-active);
+  border-bottom-color: var(--color-active-bg);
 }
 
 .option-container:last-child {
@@ -58,11 +68,40 @@ body {
 
 .option-container .tip {
   margin-top: 10px;
-  color: #57606a;
+  color: var(--color-tip);
   font-size: 0.9em;
 }
 
-/* Toggle button */
+/* Donation
+   ========================================================================== */
+.donation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  font-size: 0.9em;
+  text-align: center;
+  border-top: 1px solid var(--color-inactive-bg);
+}
+
+.donation i {
+  margin-right: 10px;
+}
+
+.donation a {
+  color: var(--color-tip);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.donation a:hover {
+  color: var(--color-main);
+}
+
+/* Toggle button
+   ========================================================================== */
+
 .switch {
   position: relative;
   display: inline-block;
@@ -70,7 +109,9 @@ body {
   height: 24px;
 }
 
-.switch input { display: none; }
+.switch input {
+  display: none;
+}
 
 .slider {
   position: absolute;
@@ -104,13 +145,14 @@ input:checked + .slider {
 
 input:checked + .slider::before {
   transform: translateX(20px);
-
-  /* border: 1px solid #000; */
 }
 
 input:focus + .slider {
   box-shadow: 0 0 1px #3fa248;
 }
+
+/* Icons
+   ========================================================================== */
 
 .checkmark {
   position: relative;
@@ -139,37 +181,6 @@ input:focus + .slider {
   content: "";
 }
 
-.checkmark-no {
-  position: relative;
-  display: block;
-  box-sizing: border-box;
-  width: 22px;
-  height: 22px;
-  border: 2px solid;
-  border-radius: 40px;
-
-  /* transform: scale(var(--ggs, 1)); */
-}
-
-.checkmark-no::after,
-.checkmark-no::before {
-  position: absolute;
-  top: 8px;
-  left: 3px;
-  display: block;
-  box-sizing: border-box;
-  width: 12px;
-  height: 2px;
-  background: currentcolor;
-  border-radius: 5px;
-  transform: rotate(45deg);
-  content: "";
-}
-
-.checkmark-no::after {
-  transform: rotate(-45deg);
-}
-
 .checkmark-sad {
   position: relative;
   display: block;
@@ -178,8 +189,6 @@ input:focus + .slider {
   height: 20px;
   border: 2px solid;
   border-radius: 100px;
-
-  /* transform: scale(var(--ggs, 1)); */
 }
 
 .checkmark-sad::after,
@@ -204,10 +213,35 @@ input:focus + .slider {
   top: 9px;
   width: 8px;
   height: 4px;
-  border: 2px solid;
+  border: 2px solid var(--color-tip);
   border-top-color: transparent;
-  border-radius: 150px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  border-radius: 0 0 150px 150px;
   transform: scaleY(-1);
+}
+
+.icon-code,
+.icon-code::after,
+.icon-code::before {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 8px;
+  height: 18px;
+}
+
+.icon-code::after,
+.icon-code::before {
+  position: absolute;
+  top: 6px;
+  left: -3px;
+  height: 8px;
+  border-bottom: 2px solid var(--color-tip);
+  border-left: 2px solid var(--color-tip);
+  transform: rotate(45deg) scaleY(1);
+  content: "";
+}
+
+.icon-code::after {
+  left: 3px;
+  transform: rotate(-45deg) scaleX(-1);
 }
