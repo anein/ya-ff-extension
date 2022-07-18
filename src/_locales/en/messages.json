@@ -30,7 +30,7 @@
     "message": "Use Arial font"
   },
   "ya_fonts_description": {
-    "message": "Replaces the YS Text font with classic Arial."
+    "message": "Replace the YS Text font with classic Arial."
   },
   "ya_font_size_title": {
     "message": "Improve fonts size and styles"
@@ -43,5 +43,11 @@
   },
   "ya_side_panel_description": {
     "message": "Turn off the right panel on the Yandex search result page."
+  },
+  "donation_description": {
+    "message": "Like it?"
+  },
+  "donation_support": {
+    "message": "Support"
   }
 }

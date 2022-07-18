@@ -43,5 +43,14 @@
   },
   "ya_side_panel_description": {
     "message": "Удаляет боковую панель с подсказками на странице выдачи."
+  },
+  "donation_description": {
+    "message": "Понравилось?"
+  },
+  "donation_support": {
+    "message": "Поддержать"
+  },
+  "donation_support_link": {
+    "message": ""
   }
 }
