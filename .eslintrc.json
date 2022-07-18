@@ -5,6 +5,24 @@
     "webextensions": true
   },
   "extends": [
-    "eslint:recommended"
-  ]
+    "eslint:recommended",
+    "airbnb-base/legacy",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "rules": {
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false
+      }
+    ],
+    "prettier/prettier": "error"
+  }
 }

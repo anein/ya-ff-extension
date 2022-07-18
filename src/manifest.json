@@ -4,7 +4,7 @@
   "short_name": "YaSearch",
   "description": "__MSG_extension_description__",
   "version": "1.0.2",
-  "default_locale": "en",
+  "default_locale": "ru",
   "author": "Alexander Ein",
   "icons": {
     "16": "icons/icon-16.png",
@@ -16,6 +16,21 @@
       "background/background.js"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://yandex.ru/search/*",
+        "*://yandex.com/search/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "content/content.js"
+      ],
+      "css": [
+        "content/content.css"
+      ]
+    }
+  ],
   "chrome_settings_overrides": {
     "search_provider": {
       "name": "Yandex",
@@ -29,11 +44,18 @@
   "browser_action": {
     "browser_style": true,
     "default_title": "__MSG_browser_action_title__",
-    "default_icon": "icons/icon-48.png"
+    "default_icon": "icons/icon-48.png",
+    "default_popup": "popup/options.html"
   },
   "browser_specific_settings": {
     "gecko": {
       "id": "ya-search@anein"
     }
-  }
+  },
+  "permissions": [
+    "storage",
+    "search",
+    "*://yandex.ru/search/*",
+    "*://yandex.com/search/*"
+  ]
 }

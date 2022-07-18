@@ -2,3 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npm run lint
+printf "%60s" " " | tr ' ' '-'
+npm run web-ext:lint
