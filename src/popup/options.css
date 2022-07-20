@@ -227,13 +227,14 @@ input:focus + .slider {
   box-sizing: border-box;
   width: 8px;
   height: 18px;
+  transform: translateZ(10px);
 }
 
 .icon-code::after,
 .icon-code::before {
   position: absolute;
-  top: 6px;
-  left: -3px;
+  top: 4px;
+  left: 0;
   height: 8px;
   border-bottom: 2px solid var(--color-tip);
   border-left: 2px solid var(--color-tip);
@@ -242,6 +243,66 @@ input:focus + .slider {
 }
 
 .icon-code::after {
-  left: 3px;
+  left: 6px;
   transform: rotate(-45deg) scaleX(-1);
+}
+
+.icon-smile-mouth-open {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border: 2px solid;
+  border-radius: 100px;
+  transform: scale(1) rotateX(-90deg) translateZ(10px);
+}
+
+.icon-smile-mouth-open::after,
+.icon-smile-mouth-open::before {
+  position: absolute;
+  left: 4px;
+  display: block;
+  box-sizing: border-box;
+  content: "";
+}
+
+.icon-smile-mouth-open::before {
+  top: 5px;
+  width: 2px;
+  height: 2px;
+  background: currentcolor;
+  border-radius: 50%;
+  box-shadow: 6px 0 0;
+}
+
+.icon-smile-mouth-open::after {
+  top: 9px;
+  width: 8px;
+  height: 4px;
+  border: 2px solid;
+  border-radius: 0 0 150px 150px;
+}
+
+.icon-container {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 16px;
+  transform-style: preserve-3d; /* <-NB */
+  transition: -webkit-transform 0.33s;
+  transition: transform 0.33s; /* Animate the transform properties */
+}
+
+.icon-container .icon-smile-mouth-open {
+  left: -2px;
+}
+
+.icon-container .icon-code,
+.icon-container .icon-smile-mouth-open {
+  position: absolute;
+}
+
+.donation:hover .icon-container {
+  transform: rotateX(90deg);
 }
