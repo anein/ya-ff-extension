@@ -5,3 +5,4 @@ node_modules/
 # Lock files
 *-lock.*
 .idea/*
+web-ext-artifacts/
