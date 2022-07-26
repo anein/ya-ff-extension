@@ -52,5 +52,17 @@
   },
   "donation_support_link": {
     "message": ""
+  },
+  "ya_group_fonts_title": {
+    "message": "Шрифты"
+  },
+  "ya_group_panels_title": {
+    "message": "Панели"
+  },
+  "ya_zen_title": {
+    "message": "Режим Дзен"
+  },
+  "ya_zen_description": {
+    "message": "Включает все  опции, убирает тени и делает фон белым."
   }
 }

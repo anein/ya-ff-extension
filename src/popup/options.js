@@ -12,17 +12,42 @@ function onDataLoaded(options) {
   let optionsElements = "";
 
   // loop over options and create elements for the popup menu
-  Object.entries(options).forEach((value, index) => {
-    const [name, state] = [...value];
+  options.forEach((value, index) => {
+    const { name, state, items = null } = { ...value };
 
-    let stateElement =
-      index === 0 ? createCheckmark(state) : createCheckbox(name, state);
-    optionsElements += createOptionElement(name, state, stateElement);
+    if (items) {
+      optionsElements += createGroupElement(value);
+    } else {
+      optionsElements += createOptionElement(name, state, "");
+    }
   });
+
+  //   if () {
+  //     let stateElement =
+  //       index === 0 ? createCheckmark(state) : createCheckbox(name, state);
+  //   }
+  //   optionsElements += createOptionElement(name, state, stateElement);
+  // });
 
   container.innerHTML = optionsElements;
 
   setInputLinters();
+}
+
+function createGroupElement(item) {
+  const { name, items } = { ...item };
+  let elements = "";
+
+  items.forEach((el) => {
+    elements += createOptionElement(el.name, el.state, "");
+  });
+
+  return `
+    <section class="options-group">
+        <h5 class="title">${browser.i18n.getMessage(name + "_title")}</h5>
+        <section>${elements}</section>
+    </section>
+  `;
 }
 
 /**
@@ -38,13 +63,13 @@ function createOptionElement(name, state, stateElement) {
   const description = browser.i18n.getMessage(name + "_description");
 
   return `
-  <section class="option-container ${state ? "active" : ""}">
+  <section class="option-container ${name}  ${state ? "active" : ""}">
     <div class="option-item">
       <div>
           <div class="title">${title}</div>
           ${description ? `<div class="tip">${description}</div>` : ""}
       </div>
-      <div class="state">${stateElement}</div>
+      <div class="state">${createCheckbox(name, state)}</div>
     </div>
 
   </section>
@@ -138,7 +163,7 @@ async function init() {
     //
   }
 
-  //
+  // translate html
   document.querySelectorAll("[data-i18n]").forEach((item) => {
     const [value, attr = null] = item.dataset.i18n.split("|");
     const message = browser.i18n.getMessage(value);

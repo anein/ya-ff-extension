@@ -4,12 +4,48 @@
  * @module background
  */
 
-const DEFAULT_OPTIONS = {
-  ya_search: false,
-  ya_fonts: false,
-  ya_font_size: false,
-  ya_side_panel: false,
-};
+const DEFAULT_OPTIONS = [
+  {
+    id: 0,
+    name: "ya_search",
+    state: false,
+  },
+  {
+    id: 1,
+    name: "ya_zen",
+    state: false,
+    disable: "all",
+  },
+  {
+    id: 2,
+    name: "ya_group_fonts",
+    state: true,
+    items: [
+      {
+        id: 0,
+        name: "ya_fonts",
+        state: false,
+      },
+      {
+        id: 1,
+        name: "ya_font_size",
+        state: false,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "ya_group_panels",
+    state: true,
+    items: [
+      {
+        id: 0,
+        name: "ya_side_panel",
+        state: false,
+      },
+    ],
+  },
+];
 
 const urlMatches = browser.runtime.getManifest().content_scripts[0].matches;
 

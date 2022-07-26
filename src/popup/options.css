@@ -28,19 +28,19 @@ body {
 }
 
 .option-container {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
   color: var(--color-main);
   border-bottom: 1px solid rgb(255 255 255);
 }
 
-.option-container:first-child {
+.option-container.ya_search {
   margin-top: 0;
   background-color: var(--color-inactive);
   border-bottom-color: var(--color-inactive-bg);
 }
 
-.option-container:first-child.active {
+.option-container.ya_search.active {
   background-color: var(--color-active);
   border-bottom-color: var(--color-active-bg);
 }
@@ -53,7 +53,7 @@ body {
   display: grid;
   grid-template-columns: 75% 24%;
   align-items: center;
-  padding: 20px;
+  padding: 16px;
   column-gap: 10px;
 }
 
@@ -67,9 +67,23 @@ body {
 }
 
 .option-container .tip {
-  margin-top: 10px;
+  margin-top: 8px;
   color: var(--color-tip);
   font-size: 0.9em;
+}
+
+.options-group {
+  margin-left: 20px;
+}
+
+.options-group h5.title {
+  margin: 6px 0;
+  padding: 0;
+  color: rgb(87 96 106/ 70%);
+}
+
+.options-group .option-container {
+  margin: 0;
 }
 
 /* Donation
