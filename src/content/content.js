@@ -3,7 +3,7 @@
 browser.runtime
   .sendMessage({ type: "getRegisteredScripts" })
   .then((options) => {
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
       if (options.length > 0) {
         document.body.classList.add(...options);
       }
