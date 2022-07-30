@@ -12,22 +12,15 @@ function onDataLoaded(options) {
   let optionsElements = "";
 
   // loop over options and create elements for the popup menu
-  options.forEach((value, index) => {
-    const { name, state, items = null } = { ...value };
+  options.forEach((value) => {
+    const { items = null } = { ...value };
 
     if (items) {
       optionsElements += createGroupElement(value);
     } else {
-      optionsElements += createOptionElement(name, state, "");
+      optionsElements += createOptionElement(value);
     }
   });
-
-  //   if () {
-  //     let stateElement =
-  //       index === 0 ? createCheckmark(state) : createCheckbox(name, state);
-  //   }
-  //   optionsElements += createOptionElement(name, state, stateElement);
-  // });
 
   container.innerHTML = optionsElements;
 
@@ -39,7 +32,7 @@ function createGroupElement(item) {
   let elements = "";
 
   items.forEach((el) => {
-    elements += createOptionElement(el.name, el.state, "");
+    elements += createOptionElement(el);
   });
 
   return `
@@ -53,23 +46,29 @@ function createGroupElement(item) {
 /**
  * Composites html elements of option.
  *
- * @param {string} name - option name
- * @param {boolean} state - option state
- * @param {string} stateElement - customized state element for the state column
+ * @param {string} item.name - option name
+ * @param {boolean} item.state - option state
+ * @param {string} [item.handler] - an optional handler for additional element processing
  */
-function createOptionElement(name, state, stateElement) {
+function createOptionElement(item) {
+  const { name, state, element = null, handler = null } = item;
   //
   const title = browser.i18n.getMessage(name + "_title");
   const description = browser.i18n.getMessage(name + "_description");
 
   return `
   <section class="option-container ${name}  ${state ? "active" : ""}">
+
     <div class="option-item">
       <div>
           <div class="title">${title}</div>
           ${description ? `<div class="tip">${description}</div>` : ""}
       </div>
-      <div class="state">${createCheckbox(name, state)}</div>
+      <div class="state">${
+        element === "checkmark"
+          ? createCheckmark(state)
+          : createCheckbox(name, state, handler)
+      }</div>
     </div>
 
   </section>
@@ -96,10 +95,11 @@ function createCheckmark(state) {
  *
  * @returns {string} A checkbox element
  */
-function createCheckbox(name, checked) {
+function createCheckbox(name, checked, handler) {
   return `
      <label class="switch">
-        <input type="checkbox" ${checked ? "checked" : ""} name="${name}">
+        <input type="checkbox" ${checked ? "checked" : ""}
+        name="${name}" ${handler ? `data-handler="${handler}"` : ""}>
         <span class="slider"></span>
     </label>`;
 }
@@ -114,10 +114,48 @@ function setInputLinters() {
 
   inputs.forEach((element) => {
     element.addEventListener("change", (event) => {
+      const name = event.target.name;
+      const state = event.target.checked;
       // console.log(event.target.checked, event.target.name);
-      saveOptions(event.target.name, event.target.checked);
+      if (event.target.dataset && "handler" in event.target.dataset) {
+        switch (event.target.dataset.handler) {
+          case "disable-all":
+            disableOrEnableCheckboxes(state, name);
+            break;
+          default:
+            break;
+        }
+      }
+
+      saveOptions(name, state);
     });
   });
+}
+
+/**
+ * Changes the state of checkbox elements.
+ *
+ * @param {boolean} disable - a disable flag.
+ * @param {string} name - an element name to avoid disabling.
+ */
+function disableOrEnableCheckboxes(disable, name) {
+  //
+  const container = document.querySelector(".container");
+  const inputs = container.querySelectorAll("input[type='checkbox']");
+
+  if (disable) {
+    container.classList.add("disable");
+    inputs.forEach((item) => {
+      if (item.name !== name) {
+        item.disabled = true;
+      }
+    });
+  } else {
+    container.classList.remove("disable");
+    inputs.forEach((item) => {
+      item.disabled = false;
+    });
+  }
 }
 
 /**
@@ -168,7 +206,11 @@ async function init() {
     const [value, attr = null] = item.dataset.i18n.split("|");
     const message = browser.i18n.getMessage(value);
 
-    attr ? item.setAttribute(attr, message) : (item.textContent = message);
+    if (attr) {
+      item.setAttribute(attr, message);
+    } else {
+      item.textContent = message;
+    }
   });
 }
 

@@ -44,6 +44,18 @@
   "ya_side_panel_description": {
     "message": "Turn off the right panel on the Yandex search result page."
   },
+  "ya_group_fonts_title": {
+    "message": "Fonts"
+  },
+  "ya_group_panels_title": {
+    "message": "Panels"
+  },
+  "ya_zen_title": {
+    "message": "Zen Mode"
+  },
+  "ya_zen_description": {
+    "message": "Enable all options, remove shadows and icons, make background white."
+  },
   "donation_description": {
     "message": "Like it?"
   },
