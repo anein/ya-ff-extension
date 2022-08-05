@@ -2,16 +2,74 @@ body {
   display: none;
 }
 
+/* Zen Mode
+   ========================================================================== */
+
+.ya_zen .serp-item_card {
+  box-shadow: none;
+}
+
+.ya_zen .main {
+  background: white;
+}
+
+.ya_zen .content__left .Favicon {
+  display: none;
+}
+
+.ya_zen .Path .Link {
+  color: var(--color-g-text-tertiary);
+  font-weight: 300;
+}
+
+
+.ya_zen .Path .Link b {
+  color: var(--color-g-greenurl);
+  font-weight: bold;
+}
+
+.ya_zen .Path .Link:hover {
+  color: var(--color-g-greenurl);
+}
+
+.ya_zen:not(.ya_font_size) .serp-item .Typo {
+  font-weight: 300 !important;
+  font-size: 1.2em !important;
+}
+
+.ya_zen:not(.ya_font_size) .serp-item .Typo_text_m {
+  font-size: 1.06em !important;
+  line-height: 1.45 !important;
+}
+
+.ya_zen:not(.ya_font_size) .serp-item .Path {
+  margin: 2px 0;
+  font-weight: 700;
+}
+
+.ya_zen:not(.ya_font_size) .serp-item .TextContainer b {
+  font-weight: 600;
+}
+
+.ya_zen:not(.ya_font_size) .serp-item .Sitelinks_size_m {
+  height: 1.5em;
+}
+
+.ya_zen:not(.ya_fonts) .Typo {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.ya_zen:not(.ya_side_panel) #search-result-aside {
+  display: none !important;
+}
+
+
 /* Font sizes
    ========================================================================== */
 
 .ya_font_size .serp-item .Typo {
   font-weight: 300 !important;
   font-size: 1.2em !important;
-}
-
-.ya_font_size .serp-item h2.Typo {
-  white-space: nowrap;
 }
 
 

@@ -4,17 +4,33 @@
  * @module background
  */
 
+/**
+ * @typedef {Object} Option
+ * @property {number} id - Object id or ordinal number.
+ * @property {string} name - Option name.
+ * @property {boolean} state - Indicates whether the option is enabled.
+ * @property {string} [element] - Indicates a special html element for drawing the option.
+ * @property {string} [handler] - Indicates a special handler on the click listener.
+ * @property {[Option]} [items] - Nested options.
+ */
+
+/**
+ * Default options.
+ *
+ * @type [Option]
+ */
 const DEFAULT_OPTIONS = [
   {
     id: 0,
     name: "ya_search",
     state: false,
+    element: "checkmark",
   },
   {
     id: 1,
     name: "ya_zen",
     state: false,
-    disable: "all",
+    handler: "disable-all",
   },
   {
     id: 2,
@@ -47,14 +63,14 @@ const DEFAULT_OPTIONS = [
   },
 ];
 
-const urlMatches = browser.runtime.getManifest().content_scripts[0].matches;
-
 /**
  * Registers CSS and Script files based on options, set on the option base,
  * or using the default options.
  *
  */
 async function registerCSSAndScripts() {
+  const urlMatches = browser.runtime.getManifest().content_scripts[0].matches;
+
   let options = await getOptions();
   let tabIds;
 
@@ -66,13 +82,9 @@ async function registerCSSAndScripts() {
     return new Error(e);
   }
 
-  let optionsInactiveIds = Object.keys(options).filter(
-    (element) => options[element] === false
-  );
+  let optionsInactiveIds = filterOptionsByState(options, false);
 
-  let optionsActiveIds = Object.keys(options).filter(
-    (element) => options[element] === true
-  );
+  let optionsActiveIds = filterOptionsByState(options, true);
 
   if (optionsInactiveIds.length > 0) {
     tabIds.forEach(({ id }) => {
@@ -101,6 +113,9 @@ async function registerCSSAndScripts() {
  * Sets basic listeners for communication between scripts.
  */
 function setListeners() {
+  if (typeof browser === "undefined") {
+    return;
+  }
   // listen message from the popup script.
   browser.runtime.onMessage.addListener((message) => {
     switch (message.type) {
@@ -145,9 +160,16 @@ async function getOptions() {
   // checking if the engine sets as default and then set a search engine flag.
   const results = await browser.search.get();
 
-  options.ya_search = !!results.find(
+  const isYaSearchDefault = !!results.find(
     (elem) => elem.name === searchEngineName && elem.isDefault
   );
+
+  options.forEach((item) => {
+    // @todo Replace static key name with something else.
+    if (item.name === "ya_search") {
+      item.state = isYaSearchDefault;
+    }
+  });
 
   return options;
 }
@@ -157,30 +179,99 @@ async function getOptions() {
  */
 async function getOnlyActiveOptions() {
   const options = await getOptions();
-  return Object.keys(options).filter((element) => options[element] === true);
+  return filterOptionsByState(options, true);
 }
 
 /**
- * Saves a key-value pair of options to the storage.
+ * Saves a name-state pair of options to the storage.
  */
-async function saveOptions(key, value) {
-  const options = await getOptions();
-
-  if (!(key in options)) {
-    throw new Error(`Options  doesn't have the ${key} key.`);
+async function saveOptions(name, state) {
+  let options = await getOptions();
+  if (isNameInOptions(options, name) === false) {
+    throw new Error(`Options  doesn't have the ${name} option.`);
   }
 
-  if (options[key] === value) {
-    return "Nothing to save";
+  try {
+    options = changeOptionState(options, name, state);
+  } catch (e) {
+    throw new Error(e);
   }
-
-  options[key] = value;
 
   browser.storage.local.set({ options }).catch((error) => {
     throw new Error(error);
   });
 
   return options;
+}
+
+/**
+ * Filters given options by state and returns a list of relevant option names.
+ *
+ * @param {[Option]} options - a list of options.
+ * @param {boolean} state - an option state.
+ */
+function filterOptionsByState(options, state) {
+  let names = [];
+
+  const filteredNames = options.filter((item) => {
+    if ("items" in item) {
+      names.push(...filterOptionsByState(item.items, state));
+    }
+    return item.state === state;
+  });
+
+  if (filteredNames.length > 0) {
+    names.push(...filteredNames.map((item) => item.name));
+  }
+  return names;
+}
+
+/**
+ * Finds a name in the list of options.
+ *
+ * @param {[Option]} options - a list of  options.
+ * @param {string} name - a desired name.
+ * @returns {boolean} True if the name was found, otherwise returns False.
+ */
+function isNameInOptions(options, name) {
+  if (!name) {
+    return false;
+  }
+
+  return options.some((item) => {
+    if ("items" in item) {
+      return isNameInOptions(item.items, name);
+    }
+
+    return item.name === name;
+  });
+}
+
+/**
+ * Changes a state of the option.
+ *
+ * @param {[Option]} options - a list of options.
+ * @param {string } name  - a desired option name.
+ * @param {boolean} state - an option state.
+ * @returns {[Option]} changed list of options, otherwise given list.
+ */
+function changeOptionState(options, name, state) {
+  if (!name) {
+    return options;
+  }
+
+  const newOptions = [...options];
+
+  newOptions.forEach((item) => {
+    if (item.name === name) {
+      item.state = state;
+      return;
+    }
+    if ("items" in item) {
+      item.items = changeOptionState(item.items, name, state);
+    }
+  });
+  return newOptions;
 }
 
 setListeners();

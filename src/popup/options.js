@@ -3,7 +3,7 @@
 /**
  * Builds the popup page based on the given options and sets listeners for changing state.
  *
- * @param options
+ * @param {[Option]} options - a list of options
  */
 function onDataLoaded(options) {
   const container = document.querySelector(".container");
@@ -23,6 +23,12 @@ function onDataLoaded(options) {
   });
 
   container.innerHTML = optionsElements;
+
+  options.forEach((item) => {
+    if ("handler" in item && item.handler === "disable-all") {
+      disableOrEnableCheckboxes(item.name, item.state);
+    }
+  });
 
   setInputLinters();
 }
@@ -120,7 +126,7 @@ function setInputLinters() {
       if (event.target.dataset && "handler" in event.target.dataset) {
         switch (event.target.dataset.handler) {
           case "disable-all":
-            disableOrEnableCheckboxes(state, name);
+            disableOrEnableCheckboxes(name, state);
             break;
           default:
             break;
@@ -135,10 +141,10 @@ function setInputLinters() {
 /**
  * Changes the state of checkbox elements.
  *
- * @param {boolean} disable - a disable flag.
  * @param {string} name - an element name to avoid disabling.
+ * @param {boolean} disable - a disable flag.
  */
-function disableOrEnableCheckboxes(disable, name) {
+function disableOrEnableCheckboxes(name, disable) {
   //
   const container = document.querySelector(".container");
   const inputs = container.querySelectorAll("input[type='checkbox']");
