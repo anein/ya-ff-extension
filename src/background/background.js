@@ -15,55 +15,6 @@
  */
 
 /**
- * Default options.
- *
- * @type [Option]
- */
-const DEFAULT_OPTIONS = [
-  {
-    id: 0,
-    name: "ya_search",
-    state: false,
-    element: "checkmark",
-  },
-  {
-    id: 1,
-    name: "ya_zen",
-    state: false,
-    handler: "disable-all",
-  },
-  {
-    id: 2,
-    name: "ya_group_fonts",
-    state: true,
-    items: [
-      {
-        id: 0,
-        name: "ya_fonts",
-        state: false,
-      },
-      {
-        id: 1,
-        name: "ya_font_size",
-        state: false,
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "ya_group_panels",
-    state: true,
-    items: [
-      {
-        id: 0,
-        name: "ya_side_panel",
-        state: false,
-      },
-    ],
-  },
-];
-
-/**
  * Registers CSS and Script files based on options, set on the option base,
  * or using the default options.
  *
@@ -138,6 +89,55 @@ function setListeners() {
 }
 
 /**
+ * Default options.
+ *
+ * @returns {[Option]} a list of default options
+ */
+function getDefaultOptions() {
+  return [
+    {
+      id: 0,
+      name: "ya_search",
+      state: false,
+      element: "checkmark",
+    },
+    {
+      id: 1,
+      name: "ya_zen",
+      state: false,
+      handler: "disable-all",
+    },
+    {
+      id: 2,
+      name: "ya_group_fonts",
+      items: [
+        {
+          id: 0,
+          name: "ya_fonts",
+          state: false,
+        },
+        {
+          id: 1,
+          name: "ya_font_size",
+          state: false,
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: "ya_group_panels",
+      items: [
+        {
+          id: 0,
+          name: "ya_side_panel",
+          state: false,
+        },
+      ],
+    },
+  ];
+}
+
+/**
  * Retrieves options from the storage.
  */
 async function getOptions() {
@@ -149,8 +149,11 @@ async function getOptions() {
     throw new Error("Cannot retrieve options from the storage.");
   }
 
-  const options =
-    Object.entries(data).length === 0 ? DEFAULT_OPTIONS : data.options;
+  let options = getDefaultOptions();
+
+  if (data && "options" in data) {
+    options = data.options;
+  }
 
   // getting search engine name
   const searchEngineName =
@@ -187,6 +190,7 @@ async function getOnlyActiveOptions() {
  */
 async function saveOptions(name, state) {
   let options = await getOptions();
+
   if (isNameInOptions(options, name) === false) {
     throw new Error(`Options  doesn't have the ${name} option.`);
   }
@@ -217,7 +221,7 @@ function filterOptionsByState(options, state) {
     if ("items" in item) {
       names.push(...filterOptionsByState(item.items, state));
     }
-    return item.state === state;
+    return "state" in item && item.state === state;
   });
 
   if (filteredNames.length > 0) {
@@ -274,4 +278,101 @@ function changeOptionState(options, name, state) {
   return newOptions;
 }
 
-setListeners();
+/**
+ * Converts the old object-like options to the list.
+ *
+ * @param {{}} options  - an option object
+ *
+ * @returns {[Option]} converted list
+ */
+function convertOptions(options) {
+  let convertedOptions = getDefaultOptions();
+
+  if (Array.isArray(options)) {
+    return options;
+  }
+
+  if (!options || Object.keys(options).length === 0) {
+    return convertedOptions;
+  }
+
+  Object.keys(options).forEach((key) => {
+    if (Object.hasOwnProperty.call(options, key)) {
+      convertedOptions = changeOptionState(convertedOptions, key, options[key]);
+    }
+  });
+
+  return convertedOptions;
+}
+
+/**
+ * Checks the old object-like options and converts them to the list format.
+ *
+ * @returns {Promise<null|[Option]>}
+ */
+async function checkOldStyleOptionsAndRewrite() {
+  let data;
+
+  try {
+    data = await browser.storage.local.get("options");
+  } catch (error) {
+    throw new Error("Cannot retrieve options from the storage.");
+  }
+
+  if (!("options" in data)) {
+    return getDefaultOptions();
+  }
+
+  if ("options" in data && !Array.isArray(data.options)) {
+    return convertOptions(data.options);
+  }
+
+  return null;
+}
+
+/**
+ * Compares the manifest version and stored version, then
+ */
+async function checkExtVersion() {
+  /**
+   *
+   * @type {{[version: string]}| string}
+   */
+  let storedVersion = await browser.storage.local.get("version");
+  const currentVersion = browser.runtime.getManifest().version;
+
+  if ("version" in storedVersion) {
+    storedVersion = storedVersion.version;
+  } else {
+    storedVersion = "";
+  }
+
+  if (
+    !storedVersion ||
+    storedVersion.toString().localeCompare(currentVersion, undefined, {
+      numeric: true,
+    }) === -1
+  ) {
+    const data = await checkOldStyleOptionsAndRewrite();
+    // saves new version
+    await browser.storage.local.set({ version: currentVersion });
+    // saves the options if they exist
+    if (data) {
+      await browser.storage.local.set({
+        options: data,
+      });
+    }
+  }
+}
+
+/**
+ * Initializes basic behavior.
+ */
+async function init() {
+  await checkExtVersion();
+  setListeners();
+}
+
+(function () {
+  init();
+})();
