@@ -22,7 +22,6 @@ body {
   font-weight: 300;
 }
 
-
 .ya_zen .Path .Link b {
   color: var(--color-g-greenurl);
   font-weight: bold;
@@ -63,6 +62,29 @@ body {
   display: none !important;
 }
 
+.ya_zen .serp-item[data-fast-name="translate"] {
+  border: 1px solid rgb(0 0 0 / 10%);
+  border-radius: 0;
+}
+
+.ya_zen .Translate-Input, .ya_zen .Translate-Output {
+  border-radius: 0 !important;
+}
+
+.ya_zen .Translate-Meanings,
+.ya_zen .Translate-Class,
+.ya_zen .Translate-Values {
+  font-weight: 400;
+}
+
+.ya_zen .Translate-Reference strong {
+  font-weight: 600;
+}
+
+.ya_zen .Translate-Transcription {
+  font-weight: 400;
+}
+
 
 /* Font sizes
    ========================================================================== */
@@ -71,7 +93,6 @@ body {
   font-weight: 300 !important;
   font-size: 1.2em !important;
 }
-
 
 .ya_font_size .serp-item .Typo_text_m {
   font-size: 1.06em !important;
@@ -89,6 +110,20 @@ body {
 
 .ya_font_size .serp-item .Sitelinks_size_m {
   height: 1.5em;
+}
+
+.ya_font_size .Translate-Meanings,
+.ya_font_size .Translate-Class,
+.ya_font_size .Translate-Values {
+  font-weight: 400;
+}
+
+.ya_font_size .Translate-Reference strong {
+  font-weight: 600;
+}
+
+.ya_font_size .Translate-Transcription {
+  font-weight: 400;
 }
 
 /* Fonts
