@@ -3,7 +3,7 @@
   "name": "__MSG_extension_name__",
   "short_name": "YaSearch",
   "description": "__MSG_extension_description__",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "default_locale": "ru",
   "author": "Alexander Ein",
   "icons": {
