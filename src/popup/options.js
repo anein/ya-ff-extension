@@ -34,7 +34,7 @@ function onDataLoaded(options) {
 }
 
 function createGroupElement(item) {
-  const { name, items } = { ...item };
+  const { items } = { ...item };
   let elements = "";
 
   items.forEach((el) => {
@@ -43,7 +43,6 @@ function createGroupElement(item) {
 
   return `
     <section class="options-group">
-        <h5 class="title">${browser.i18n.getMessage(name + "_title")}</h5>
         <section>${elements}</section>
     </section>
   `;
@@ -98,6 +97,7 @@ function createCheckmark(state) {
  *
  * @param {string} name - checkbox name
  * @param {boolean} checked - checkbox state
+ * @param {string | null} handler - additional handler
  *
  * @returns {string} A checkbox element
  */
