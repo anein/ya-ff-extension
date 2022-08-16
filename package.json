@@ -1,5 +1,6 @@
 {
   "name": "YaSearch",
+  "type": "module",
   "author": {
     "name": "Alexander Ein"
   },
@@ -14,24 +15,34 @@
   ],
   "license": "MIT",
   "scripts": {
-    "lint": "eslint ./src/background/",
+    "lint": "eslint .",
+    "lint:staged": "lint-staged",
     "prepare": "husky install",
     "web-ext:run": "web-ext run --source-dir src/",
-    "web-ext:lint": "web-ext lint --source-dir src/"
+    "web-ext:lint": "web-ext lint --source-dir src/",
+    "test": "mocha"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ]
   },
   "devDependencies": {
     "@types/firefox-webext-browser": "^94.0.1",
+    "chai": "^4.3.6",
     "eslint": "^8.16.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
+    "mocha": "^10.0.0",
     "prettier": "^2.7.1",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^26.0.0",
     "stylelint-order": "^5.0.0",
-    "stylint": "^2.0.0",
+    "stylint": "^0.6.3",
     "web-ext": "^7.1.0"
   }
 }

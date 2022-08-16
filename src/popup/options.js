@@ -3,7 +3,7 @@
 /**
  * Builds the popup page based on the given options and sets listeners for changing state.
  *
- * @param options
+ * @param {[Option]} options - a list of options
  */
 function onDataLoaded(options) {
   const container = document.querySelector(".container");
@@ -12,39 +12,68 @@ function onDataLoaded(options) {
   let optionsElements = "";
 
   // loop over options and create elements for the popup menu
-  Object.entries(options).forEach((value, index) => {
-    const [name, state] = [...value];
+  options.forEach((value) => {
+    const { items = null } = { ...value };
 
-    let stateElement =
-      index === 0 ? createCheckmark(state) : createCheckbox(name, state);
-    optionsElements += createOptionElement(name, state, stateElement);
+    if (items) {
+      optionsElements += createGroupElement(value);
+    } else {
+      optionsElements += createOptionElement(value);
+    }
   });
 
   container.innerHTML = optionsElements;
 
+  options.forEach((item) => {
+    if ("handler" in item && item.handler === "disable-all") {
+      disableOrEnableCheckboxes(item.name, item.state);
+    }
+  });
+
   setInputLinters();
+}
+
+function createGroupElement(item) {
+  const { items } = { ...item };
+  let elements = "";
+
+  items.forEach((el) => {
+    elements += createOptionElement(el);
+  });
+
+  return `
+    <section class="options-group">
+        <section>${elements}</section>
+    </section>
+  `;
 }
 
 /**
  * Composites html elements of option.
  *
- * @param {string} name - option name
- * @param {boolean} state - option state
- * @param {string} stateElement - customized state element for the state column
+ * @param {string} item.name - option name
+ * @param {boolean} item.state - option state
+ * @param {string} [item.handler] - an optional handler for additional element processing
  */
-function createOptionElement(name, state, stateElement) {
+function createOptionElement(item) {
+  const { name, state, element = null, handler = null } = item;
   //
   const title = browser.i18n.getMessage(name + "_title");
   const description = browser.i18n.getMessage(name + "_description");
 
   return `
-  <section class="option-container ${state ? "active" : ""}">
+  <section class="option-container ${name}  ${state ? "active" : ""}">
+
     <div class="option-item">
       <div>
           <div class="title">${title}</div>
           ${description ? `<div class="tip">${description}</div>` : ""}
       </div>
-      <div class="state">${stateElement}</div>
+      <div class="state">${
+        element === "checkmark"
+          ? createCheckmark(state)
+          : createCheckbox(name, state, handler)
+      }</div>
     </div>
 
   </section>
@@ -68,13 +97,15 @@ function createCheckmark(state) {
  *
  * @param {string} name - checkbox name
  * @param {boolean} checked - checkbox state
+ * @param {string | null} handler - additional handler
  *
  * @returns {string} A checkbox element
  */
-function createCheckbox(name, checked) {
+function createCheckbox(name, checked, handler) {
   return `
      <label class="switch">
-        <input type="checkbox" ${checked ? "checked" : ""} name="${name}">
+        <input type="checkbox" ${checked ? "checked" : ""}
+        name="${name}" ${handler ? `data-handler="${handler}"` : ""}>
         <span class="slider"></span>
     </label>`;
 }
@@ -89,10 +120,48 @@ function setInputLinters() {
 
   inputs.forEach((element) => {
     element.addEventListener("change", (event) => {
+      const name = event.target.name;
+      const state = event.target.checked;
       // console.log(event.target.checked, event.target.name);
-      saveOptions(event.target.name, event.target.checked);
+      if (event.target.dataset && "handler" in event.target.dataset) {
+        switch (event.target.dataset.handler) {
+          case "disable-all":
+            disableOrEnableCheckboxes(name, state);
+            break;
+          default:
+            break;
+        }
+      }
+
+      saveOptions(name, state);
     });
   });
+}
+
+/**
+ * Changes the state of checkbox elements.
+ *
+ * @param {string} name - an element name to avoid disabling.
+ * @param {boolean} disable - a disable flag.
+ */
+function disableOrEnableCheckboxes(name, disable) {
+  //
+  const container = document.querySelector(".container");
+  const inputs = container.querySelectorAll("input[type='checkbox']");
+
+  if (disable) {
+    container.classList.add("disable");
+    inputs.forEach((item) => {
+      if (item.name !== name) {
+        item.disabled = true;
+      }
+    });
+  } else {
+    container.classList.remove("disable");
+    inputs.forEach((item) => {
+      item.disabled = false;
+    });
+  }
 }
 
 /**
@@ -138,12 +207,16 @@ async function init() {
     //
   }
 
-  //
+  // translate html
   document.querySelectorAll("[data-i18n]").forEach((item) => {
     const [value, attr = null] = item.dataset.i18n.split("|");
     const message = browser.i18n.getMessage(value);
 
-    attr ? item.setAttribute(attr, message) : (item.textContent = message);
+    if (attr) {
+      item.setAttribute(attr, message);
+    } else {
+      item.textContent = message;
+    }
   });
 }
 

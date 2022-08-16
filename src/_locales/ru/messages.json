@@ -21,7 +21,7 @@
     "message": "https://ya.ru"
   },
   "ya_search_title": {
-    "message": "Поиск Яндекс"
+    "message": "Яндекс Поиск"
   },
   "ya_search_description": {
     "message": "Установлен ли поиск Яндекс по умолчанию."
@@ -36,13 +36,13 @@
     "message": "Улучшить шрифт и стили"
   },
   "ya_font_size_description": {
-    "message": "Увеличивает размер шрифта и расстояние между параграфами на странице выдачи."
+    "message": "Увеличивает размер шрифта и расстояние между параграфами."
   },
   "ya_side_panel_title": {
     "message": "Убрать боковую панель"
   },
   "ya_side_panel_description": {
-    "message": "Удаляет боковую панель с подсказками на странице выдачи."
+    "message": "Удаляет боковую панель с подсказками."
   },
   "donation_description": {
     "message": "Понравилось?"
@@ -52,5 +52,17 @@
   },
   "donation_support_link": {
     "message": ""
+  },
+  "ya_group_fonts_title": {
+    "message": "Шрифты"
+  },
+  "ya_group_panels_title": {
+    "message": "Панели"
+  },
+  "ya_zen_title": {
+    "message": "Режим Дзен"
+  },
+  "ya_zen_description": {
+    "message": "Включает все  опции, убирает тени и делает фон белым."
   }
 }
