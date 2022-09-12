@@ -38,7 +38,8 @@
       "is_default": true,
       "encoding": "UTF-8",
       "favicon_url": "icons/favicon.ico",
-      "search_url": "https://__MSG_search_url__/search/?text={searchTerms}"
+      "search_url": "https://__MSG_search_url__/search/?text={searchTerms}",
+      "suggest_url": "https://__MSG_search_suggest_url__/suggest-ff.cgi?part={searchTerms}"
     }
   },
   "browser_action": {

@@ -11,6 +11,9 @@
   "search_url": {
     "message": "yandex.ru"
   },
+  "search_suggest_url": {
+    "message": "suggest.yandex.ru"
+  },
   "search_favicon": {
     "message": "https://yandex.ru/favicon.ico"
   },
