@@ -67,7 +67,8 @@ body {
   border-radius: 0;
 }
 
-.ya_zen .Translate-Input, .ya_zen .Translate-Output {
+.ya_zen .Translate-Input,
+.ya_zen .Translate-Output {
   border-radius: 0 !important;
 }
 
@@ -85,7 +86,6 @@ body {
   font-weight: 400;
 }
 
-
 /* Font sizes
    ========================================================================== */
 
@@ -99,11 +99,13 @@ body {
   line-height: 1.45 !important;
 }
 
+/* make links a bit less bold  */
 .ya_font_size .serp-item .Path {
   margin: 2px 0;
-  font-weight: 700;
+  font-weight: 400;
 }
 
+/* highlight found words */
 .ya_font_size .serp-item .TextContainer b {
   font-weight: 600;
 }
